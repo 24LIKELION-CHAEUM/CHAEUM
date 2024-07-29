@@ -16,10 +16,11 @@ class Task(models.Model):
     # user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     time = models.TimeField()
-    completed = models.BooleanField(default=False)
+    is_completed = models.BooleanField(default=False)
     type = models.CharField(max_length=4, choices=TYPE_CHOICES, null=False)
     date = models.DateField(default=get_current_date)
     repeat_days = models.JSONField(default=dict, blank=True, null=True)
 
     def __str__(self):
         return self.title
+

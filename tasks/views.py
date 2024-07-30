@@ -84,3 +84,17 @@ class NotificationViewSet(viewsets.ModelViewSet):
         # 오늘 날짜의 알림 중 현재 시간보다 전인 것만 조회
         queryset = queryset.filter(task__date=today, notify_time__lte=now)
         return queryset.order_by('notify_time')
+
+    @action(detail=True, methods=['patch'])
+    def check_read(self, request, pk=None):
+        notification = self.get_object()
+        notification.is_read = True
+        notification.save(update_fields=['is_read'])
+        return Response({'status': 'completed updated'})
+
+    @action(detail=False, methods=['get'])
+    def unread_count(self, request):
+        today = timezone.localtime().date()
+        now = timezone.localtime().time()
+        unread_count = Notification.objects.filter(is_read=False, task__date=today, notify_time__lte=now).count()
+        return Response({'unread_count': unread_count})

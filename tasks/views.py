@@ -2,8 +2,8 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
-from .models import Task
-from .serializers import TaskSerializer
+from .models import Task, Notification
+from .serializers import TaskSerializer, NotificationSerializer
 from datetime import timedelta, datetime
 from django.utils import timezone
 from django.db.models.signals import post_save
@@ -61,3 +61,26 @@ class TaskViewSet(viewsets.ModelViewSet):
         task.is_completed = not task.is_completed
         task.save()
         return Response({'status': 'completed updated'})
+
+
+@receiver(post_save, sender=Task)
+def create_notification(sender, instance, created, **kwargs):
+    if created:
+        Notification.objects.create(
+            task=instance,
+            title=instance.title,
+            type=instance.type,
+            notify_time=instance.time
+        )
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        today = timezone.localtime().date()
+        now = timezone.localtime().time()
+        # 오늘 날짜의 알림 중 현재 시간보다 전인 것만 조회
+        queryset = queryset.filter(task__date=today, notify_time__lte=now)
+        return queryset.order_by('notify_time')

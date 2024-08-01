@@ -40,12 +40,25 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'tasks',
+    'corsheaders',
+    'drf_yasg',
     'accounts',
     'poke',
     'emotion',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
+
+# Q_CLUSTER = {
+#     'name': 'DjangoQ',
+#     'workers': 4,
+#     'recycle': 500,
+#     'timeout': 60,
+#     'ack_failures': True,
+#     'max_attempts': 1,
+#     'orm': 'default'
+# }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,7 +68,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 'corsheaders.middleware.CorsMiddleware',
 ]
+
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:8000',
+#     'http://127.0.0.1:8000'
+# ]
 
 ROOT_URLCONF = 'onum_Backend.urls'
 
@@ -118,6 +138,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
 
 TIME_ZONE = 'Asia/Seoul'
 

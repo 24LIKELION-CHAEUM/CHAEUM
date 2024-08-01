@@ -8,32 +8,33 @@ from datetime import timedelta, datetime
 from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from rest_framework.permissions import IsAuthenticated
 
 
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = super().get_queryset()
         date = self.request.query_params.get('date', None)
-        # queryset = queryset.filter(user=self.request.user)
+        queryset = queryset.filter(user=self.request.user)
         if date is not None:
             queryset = queryset.filter(date=date)
         queryset = queryset.order_by('time')
         return queryset
 
     def perform_create(self, serializer):
-        # user = self.request.user
+        user = self.request.user
         # 약 개수 제한 체크
         if serializer.validated_data['type'] == 'MED':
-            med_count = Task.objects.filter(type='MED').values('title').distinct().count()
+            med_count = Task.objects.filter(type='MED', user=user).values('title').distinct().count()
             if med_count >= 3:
                 raise ValidationError({"error": "약을 추가할 수 없습니다. 약은 3개까지만 등록이 가능합니다."})
 
-        task = serializer.save()  # user=user
+        task = serializer.save(user=user)  # user=user
 
         # 반복요일 설정
         if task.repeat_days:
@@ -45,7 +46,7 @@ class TaskViewSet(viewsets.ModelViewSet):
                     if day_diff == 0 and week == 0:
                         continue  # 첫 주의 현재 요일은 건너뜀
                     Task.objects.create(
-                        # user=user
+                        user=user,
                         title=task.title,
                         time=task.time,
                         is_completed=task.is_completed,
@@ -67,6 +68,7 @@ class TaskViewSet(viewsets.ModelViewSet):
 def create_notification(sender, instance, created, **kwargs):
     if created:
         Notification.objects.create(
+            user=instance.user,
             task=instance,
             title=instance.title,
             type=instance.type,
@@ -76,13 +78,14 @@ def create_notification(sender, instance, created, **kwargs):
 class NotificationViewSet(viewsets.ModelViewSet):
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = super().get_queryset()
         today = timezone.localtime().date()
         now = timezone.localtime().time()
         # 오늘 날짜의 알림 중 현재 시간보다 전인 것만 조회
-        queryset = queryset.filter(task__date=today, notify_time__lte=now)
+        queryset = queryset.filter(user=self.request.user, task__date=today, notify_time__lte=now)
         return queryset.order_by('notify_time')
 
     @action(detail=True, methods=['patch'])
@@ -96,5 +99,5 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def unread_count(self, request):
         today = timezone.localtime().date()
         now = timezone.localtime().time()
-        unread_count = Notification.objects.filter(is_read=False, task__date=today, notify_time__lte=now).count()
+        unread_count = Notification.objects.filter(user=self.request.user, is_read=False, task__date=today, notify_time__lte=now).count()
         return Response({'unread_count': unread_count})

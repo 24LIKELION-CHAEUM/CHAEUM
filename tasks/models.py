@@ -1,5 +1,5 @@
 from django.db import models
-# from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 def get_current_date():
@@ -13,12 +13,12 @@ class Task(models.Model):
         ('TASK', 'Task'),
     ]
 
-    # user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     type = models.CharField(max_length=4, choices=TYPE_CHOICES, null=False)
     time = models.TimeField()
     date = models.DateField(default=get_current_date)
-    repeat_days = models.JSONField(default=dict, blank=True, null=True)
+    repeat_days = models.JSONField(default=list, blank=True, null=True)
     is_completed = models.BooleanField(default=False)
 
     def __str__(self):
@@ -30,6 +30,7 @@ class Notification(models.Model):
         ('MEAL', 'Meal'),
         ('TASK', 'Task'),
     ]
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     type = models.CharField(max_length=4, choices=TYPE_CHOICES, null=False)

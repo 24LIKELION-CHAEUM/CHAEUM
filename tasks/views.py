@@ -3,6 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from .models import Task, Notification
+from accounts.models import UserProfile, Relationship
 from .serializers import TaskSerializer, NotificationSerializer
 from datetime import timedelta, datetime
 from django.utils import timezone
@@ -28,12 +29,6 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        # 약 개수 제한 체크
-        if serializer.validated_data['type'] == 'MED':
-            med_count = Task.objects.filter(type='MED', user=user).values('title').distinct().count()
-            if med_count >= 3:
-                raise ValidationError({"error": "약을 추가할 수 없습니다. 약은 3개까지만 등록이 가능합니다."})
-
         task = serializer.save(user=user)  # user=user
 
         # 반복요일 설정
@@ -62,6 +57,19 @@ class TaskViewSet(viewsets.ModelViewSet):
         task.is_completed = not task.is_completed
         task.save()
         return Response({'status': 'completed updated'})
+
+    @action(detail=False, methods=['get'])
+    def senior_tasks(self, request):
+        user_profile = UserProfile.objects.get(user=request.user)
+        if user_profile.user_type != 'protector':
+            return Response({"error": "시니어의 할 일을 조회할 수 있는 권한이 없습니다."}, status=status.HTTP_403_FORBIDDEN)
+
+        today = timezone.localtime().date()
+        relationships = Relationship.objects.filter(protector=user_profile, pending=False)
+        senior_tasks = Task.objects.filter(user__userprofile__in=[rel.senior for rel in relationships], date=today)
+
+        serializer = self.get_serializer(senior_tasks, many=True)
+        return Response(serializer.data)
 
 
 @receiver(post_save, sender=Task)

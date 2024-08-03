@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils import timezone
 
 class UserProfile(models.Model):
     USER_TYPE_CHOICES = [
@@ -12,6 +13,7 @@ class UserProfile(models.Model):
     name = models.CharField(max_length=100)
     birth_date = models.DateField()
     profile_image = models.ImageField(upload_to='accounts/profile_images/', null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now)  # 회원가입 날짜
     
     def __str__(self):
         return self.user.username
@@ -28,28 +30,29 @@ class UserProfile(models.Model):
             return [rel.senior for rel in self.senior_relationships.filter(pending=False)]
         return None
 
-class MealTime(models.Model):
-    MEAL_TYPE_CHOICES = [
-        ('breakfast', '아침'),
-        ('lunch', '점심'),
-        ('dinner', '저녁'),
-    ]
+# class MealTime(models.Model):
+#     MEAL_TYPE_CHOICES = [
+#         ('breakfast', '아침'),
+#         ('lunch', '점심'),
+#         ('dinner', '저녁'),
+#     ]
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    meal_type = models.CharField(max_length=10, choices=MEAL_TYPE_CHOICES)
-    time = models.TimeField()
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     meal_type = models.CharField(max_length=10, choices=MEAL_TYPE_CHOICES)
+#     time = models.TimeField()
 
-    def __str__(self):
-        return f"{self.user.username} - {self.meal_type} - {self.time}"
+#     def __str__(self):
+#         return f"{self.user.username} - {self.meal_type} - {self.time}"
 
-class Medicine(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    time = models.TimeField()
-    days = models.CharField(max_length=50)  # 요일 저장 형식 ('mon,tue,wed' 등)
+# 주석 처리된 Medicine 모델
+# class Medicine(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=100)
+#     time = models.TimeField()
+#     days = models.CharField(max_length=50)  # 요일 저장 형식 ('mon,tue,wed' 등)
 
-    def __str__(self):
-        return f"{self.user.username} - {self.name} - {self.time} - {self.days}"
+#     def __str__(self):
+#         return f"{self.user.username} - {self.name} - {self.time} - {self.days}"
 
 class Relationship(models.Model):
     RELATIONSHIP_CHOICES = [

@@ -30,7 +30,7 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('', include('tasks.urls')),
 
-    path('', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),
     path('poke/', include('poke.urls')),
     path('emotion/', include('emotion.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -119,7 +120,7 @@
                 }).then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = "{% url 'home' %}";
+                        window.location.href = "{% url 'main' %}";
                     } else {
                         alert('회원가입 중 오류가 발생했습니다.');
                     }
@@ -129,3 +130,4 @@
     </script>
 </body>
 </html>
+-->

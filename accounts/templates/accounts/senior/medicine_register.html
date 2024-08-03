@@ -1,127 +1,62 @@
+<!--
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>투약할 약 등록하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/senior/medicine_register.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group select {
-            width: 30%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .button-container {
-            text-align: left;
-            margin-top: 20px;
-        }
-        .button-container button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .day-buttons {
-            display: flex;
-            justify-content: left;
-            gap: 5px;
-        }
-        .day-button {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .day-button.active {
-            background-color: #8F6CFF;
-            color: white;
-            border-color: #8F6CFF;
-        }
+        @import url("{% static 'css/fonts.css' %}");
     </style>
 </head>
 <body>
-    <h2>투약할 약 등록하기</h2>
-    <h3>등록된 약</h3>
-    <div>
-        <span>최대 3개까지 약을 등록할 수 있어요</span>
-    </div>
-    <form id="medicine_register_form" method="post" onsubmit="return saveMedicine(event)">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="medicine_name">투약하는 약의 이름</label>
-            <input type="text" id="medicine_name" name="name" placeholder="투약하는 약의 이름을 입력해주세요" required>
-        </div>
-        <div class="form-group">
-            <label for="medicine_time">투약 시간</label>
-            <input type="time" id="medicine_time" name="time" required>
-        </div>
-        <div class="form-group">
-            <label>투약 빈도</label>
-            <div class="day-buttons">
-                <div class="day-button" data-day="mon">월</div>
-                <div class="day-button" data-day="tue">화</div>
-                <div class="day-button" data-day="wed">수</div>
-                <div class="day-button" data-day="thu">목</div>
-                <div class="day-button" data-day="fri">금</div>
-                <div class="day-button" data-day="sat">토</div>
-                <div class="day-button" data-day="sun">일</div>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>
+                <span class="comment_signup">투약할 약 등록하기</span>
             </div>
-            <input type="hidden" id="medicine_days" name="days" required>
-        </div>
-        <div class="button-container">
-            <button type="submit">등록</button>
-        </div>
-    </form>
-    <script>
-        document.querySelectorAll('.day-button').forEach(button => {
-            button.addEventListener('click', () => {
-                button.classList.toggle('active');
-                updateDaysInput();
-            });
-        });
-
-        function updateDaysInput() {
-            const activeDays = Array.from(document.querySelectorAll('.day-button.active')).map(button => button.dataset.day);
-            document.getElementById('medicine_days').value = activeDays.join(',');
-        }
-
-        function saveMedicine(event) {
-            event.preventDefault();
-            updateDaysInput();
-
-            const form = document.getElementById('medicine_register_form');
-            const formData = new FormData(form);
-
-            fetch("{% url 'save_medicine' %}", {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
-                }
-            }).then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    window.location.href = "{% url 'signup_step4_senior' %}";
-                } else {
-                    if (data.errors) {
-                        console.log('Form errors:', data.errors);
-                    }
-                    alert('저장 중 오류가 발생했습니다.');
-                }
-            }).catch(error => {
-                console.error('Error:', error);
-                alert('저장 중 오류가 발생했습니다.');
-            });
-        }
-    </script>
+            
+            <div class="recorded-emotion">
+                <div class="span1">💊 투약 시간을 등록해 주세요</div>
+                <div class="span2" id="recorded-emotion-status">없음</div>
+            </div>
+            <div class="record-info">최대 3개까지 약을 등록할 수 있어요</div>
+            <span class="title">약 등록하기</span>
+            <div class="form-group">
+                <label for="reason">투약하는 약의 이름</label>
+                <input type="text" id="reason" placeholder="투약하는 약의 이름을 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label for="hour" class="hour">투약 시간</label>
+                <div class="time-inputs">
+                    <input type="text" id="hour" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>시</div>
+                    <input type="text" id="minute" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>분</div>
+                </div>
+                <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+            </div>
+            <div class="form-group">
+                <label for="emotion" class="emotion-title">투약반복</label>
+                <div class="emotions">
+                    <div class="emotion-btn">월</div>
+                    <div class="emotion-btn">화</div>
+                    <div class="emotion-btn">수</div>
+                    <div class="emotion-btn">목</div>
+                    <div class="emotion-btn">금</div>
+                    <div class="emotion-btn">토</div>
+                    <div class="emotion-btn">일</div>
+                </div>
+            </div>
+        </main>
+        <button id="submit-button2" class="submit-button2" disabled>등록</button>
+    </div>
+    <script src="{% static 'accounts/js/senior/medicine_register.js' %}"></script>
 </body>
 </html>
+-->

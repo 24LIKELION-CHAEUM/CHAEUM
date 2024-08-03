@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile, MealTime, Medicine, Relationship
+from .models import UserProfile, Relationship
 
 class UserTypeForm(forms.Form):
     USER_TYPE_CHOICES = [
@@ -53,34 +53,36 @@ class UserProfileForm(forms.ModelForm):
             'birth_date': forms.DateInput(attrs={'type': 'date'})
         }
 
-class MealTimeForm(forms.ModelForm):
-    class Meta:
-        model = MealTime
-        fields = ['meal_type', 'time']
-        widgets = {
-            'meal_type': forms.Select(choices=MealTime.MEAL_TYPE_CHOICES),
-            'time': forms.TimeInput(attrs={'type': 'time'}),
-        }
+# MealTimeForm 클래스 주석 처리
+# class MealTimeForm(forms.ModelForm):
+#     class Meta:
+#         model = MealTime
+#         fields = ['meal_type', 'time']
+#         widgets = {
+#             'meal_type': forms.Select(choices=MealTime.MEAL_TYPE_CHOICES),
+#             'time': forms.TimeInput(attrs={'type': 'time'}),
+#         }
 
-    def save(self, user, commit=True):
-        meal_time = super().save(commit=False)
-        meal_time.user = user
-        if commit:
-            meal_time.save()
-        return meal_time
+#     def save(self, user, commit=True):
+#         meal_time = super().save(commit=False)
+#         meal_time.user = user
+#         if commit:
+#             meal_time.save()
+#         return meal_time
 
-class MedicineForm(forms.ModelForm):
-    class Meta:
-        model = Medicine
-        fields = ['name', 'time', 'days']
-        widgets = {
-            'time': forms.TimeInput(attrs={'type': 'time'}),
-            'days': forms.TextInput()  # 사용자 정의 입력 방식 적용 가능
-        }
+# MedicineForm 클래스 주석 처리
+# class MedicineForm(forms.ModelForm):
+#     class Meta:
+#         model = Medicine
+#         fields = ['name', 'time', 'days']
+#         widgets = {
+#             'time': forms.TimeInput(attrs={'type': 'time'}),
+#             'days': forms.TextInput()  # 사용자 정의 입력 방식 적용 가능
+#         }
 
-    def save(self, user, commit=True):
-        medicine = super().save(commit=False)
-        medicine.user = user
-        if commit:
-            medicine.save()
-        return medicine
+#     def save(self, user, commit=True):
+#         medicine = super().save(commit=False)
+#         medicine.user = user
+#         if commit:
+#             medicine.save()
+#         return medicine

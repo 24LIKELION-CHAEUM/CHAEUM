@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, MealTime, Medicine, Relationship
+from .models import UserProfile, Relationship
 from emotion.models import Emotion
 
 @admin.register(UserProfile)
@@ -21,15 +21,17 @@ class RelationshipAdmin(admin.ModelAdmin):
     list_display = ('senior', 'protector', 'relationship_type', 'pending')
     search_fields = ('senior__user__username', 'protector__user__username', 'relationship_type')
 
-@admin.register(MealTime)
-class MealTimeAdmin(admin.ModelAdmin):
-    list_display = ('user', 'meal_type', 'time')
-    search_fields = ('user__username', 'meal_type')
+# MealTimeAdmin 클래스 주석 처리
+# @admin.register(MealTime)
+# class MealTimeAdmin(admin.ModelAdmin):
+#     list_display = ('user', 'meal_type', 'time')
+#     search_fields = ('user__username', 'meal_type')
 
-@admin.register(Medicine)
-class MedicineAdmin(admin.ModelAdmin):
-    list_display = ('user', 'name', 'time', 'days')
-    search_fields = ('user__username', 'name')
+# MedicineAdmin 클래스 주석 처리
+# @admin.register(Medicine)
+# class MedicineAdmin(admin.ModelAdmin):
+#     list_display = ('user', 'name', 'time', 'days')
+#     search_fields = ('user__username', 'name')
 
 @admin.register(Emotion)
 class EmotionAdmin(admin.ModelAdmin):

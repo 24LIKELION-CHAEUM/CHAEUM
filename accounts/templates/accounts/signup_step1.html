@@ -3,101 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회원가입 1단계</title>
+    <title>회원가입</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/signup_step1.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .user-type-box {
-            width: 300px; 
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .user-type {
-            padding: 10px 20px;
-            border-bottom: 1px solid #ccc;
-            cursor: pointer;
-            position: relative;
-            background-color: #f9f9f9;
-        }
-        .user-type.active {
-            background-color: #8F6CFF;
-            color: white;
-        }
-        .user-type::after {
-            content: '✔';
-            position: absolute;
-            right: 20px;
-            color: #8F6CFF;
-        }
-        .user-type.active::after {
-            color: white;
-        }
-        .services {
-            padding: 10px 20px;
-            background-color: #f0f0f0;
-            font-size: 0.8em;
-            font-weight: lighter;
-            color: gray;
-        }
-        .button-container {
-            text-align: left;
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+        @import url("{% static 'css/fonts.css' %}");
     </style>
 </head>
 <body>
-    <h2>가입 유형을 선택해주세요</h2>
-    <form method="post" id="user-type-form">
-        {% csrf_token %}
-        <div class="form-group">
-            <div class="user-type-box">
-                <div class="user-type" data-value="senior" onclick="selectUserType(this)">시니어</div>
-                <div class="services">
-                    이용 서비스: 알림받기 긴급알림보내기 복지시설정보 채팅
-                </div>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>           
+                <span class="comment_signup">회원가입</span> 
             </div>
-            <div class="user-type-box">
-                <div class="user-type" data-value="protector" onclick="selectUserType(this)">보호자</div>
-                <div class="services">
-                    이용 서비스: 알림보내기 시니어접속시간확인하기 채팅
-                </div>
+            <div class="progress">
+                <progress id="progress" max="100" value="0"></progress>
             </div>
-            <input type="hidden" name="user_type" id="id_user_type">
-        </div>
-        <div class="button-container">
-            <button type="submit">다음</button>
-        </div>
-    </form>
-    <script>
-        function selectUserType(element) {
-            const isActive = element.classList.contains('active');
-            document.querySelectorAll('.user-type').forEach(el => el.classList.remove('active'));
-            if (!isActive) {
-                element.classList.add('active');
-                document.getElementById('id_user_type').value = element.getAttribute('data-value');
-            } else {
-                document.getElementById('id_user_type').value = '';
-            }
-        }
-
-        document.getElementById('user-type-form').addEventListener('submit', function(event) {
-            if (!document.getElementById('id_user_type').value) {
-                event.preventDefault();
-                alert('가입 유형을 선택해주세요.');
-            }
-        });
-    </script>
+            <div class="input">
+                <span class="input_type">가입 유형을<br>선택해주세요</span> 
+                <form id="user-type-form" method="post" action="{% url 'signup_step1' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_type" id="id_user_type">
+                    <div class="select_option">
+                        <div class="select" data-value="senior" onclick="selectOption(this)">
+                            <div class="header">
+                                <img src="{% static 'img/시니어.png' %}" alt="시니어">
+                                <span class="title">시니어</span> 
+                                <img class="check" src="{% static 'img/check_unactivated.svg' %}" alt="선택되지 않음">
+                            </div>
+                            <hr style="border: solid 1px #AFB8C1;">
+                            <div class="services">
+                                <span class="service1">이용 서비스</span>
+                                <span class="service2">알림 받기  긴급 알림 보내기  복지시설  정보  채팅</span>
+                            </div>
+                        </div>
+                        <div class="select" data-value="protector" onclick="selectOption(this)">
+                            <div class="header">
+                                <img src="{% static 'img/보호자.png' %}" alt="보호자">
+                                <span class="title">보호자</span> 
+                                <img class="check" src="{% static 'img/check_unactivated.svg' %}" alt="선택되지 않음">
+                            </div>
+                            <hr style="border: solid 1px #AFB8C1;">
+                            <div class="services">
+                                <span class="service1">이용 서비스</span>
+                                <span class="service2">알림 보내기  시니어 접속시간  확인하기  채팅</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 버튼을 form 내부에 두지만 따로 div로 감싸 위치를 조정 -->
+                    <div class="button-container">
+                        <button id="signin_btn" class="signin_btn" type="submit" disabled>다음</button>
+                    </div>
+                </form>
+            </div>            
+        </main>
+    </div>
+    <script src="{% static 'accounts/js/signup_step1.js' %}"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-function selectEmotion(card) {
+/**
+ function selectEmotion(card) {
     var cards = document.getElementsByClassName('emotion-card');
     for (var i = 0; i < cards.length; i++) {
         cards[i].classList.remove('selected');
@@ -76,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modalBackdrop.classList.add('show');
     });
     */
+   /**
     closeModalButton.addEventListener('click', function() {
         modal.classList.remove('show');
         modalBackdrop.classList.remove('show');
@@ -170,3 +172,4 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+*/

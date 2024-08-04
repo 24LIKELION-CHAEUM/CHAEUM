@@ -259,6 +259,7 @@
     
         function updatePlusButtonState() {
             const todayKR = formatDateToKR(new Date());
+            console.error('plus button.');
             if (selectedDateKr !== todayKR) {
                 plusButton.classList.add('disabled');
             } else {

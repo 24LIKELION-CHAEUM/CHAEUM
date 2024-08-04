@@ -22,4 +22,5 @@ urlpatterns = [
     path('profile/change/', views.profile_change, name='profile_change'),
     path('accept_protector_request/', views.accept_protector_request, name='accept_protector_request'),
     path('remove_connection/', views.remove_connection, name='remove_connection'),
+    path('accounts/protector/tip/', views.tip, name='tip'),
 ]

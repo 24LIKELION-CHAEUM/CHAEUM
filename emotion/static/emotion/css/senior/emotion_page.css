@@ -67,8 +67,6 @@ main {
     background-color: transparent;
 }
 
-
-
 .calendar {
     text-align: center;
 }
@@ -108,6 +106,12 @@ main {
     background-color: #8F6CFF;
     border-radius: 10px;
 }
+
+.day.active a {
+    color: white;
+    text-decoration : none;
+}
+
 
 .details {
     margin: 24px 0;
@@ -605,7 +609,8 @@ main {
     }
 }
 
-a{
+a {
+    color: #7B7B7E;
     text-decoration : none;
 }
 

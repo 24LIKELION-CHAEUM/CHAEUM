@@ -1,7 +1,7 @@
 body {
     display: flex;
     justify-content: center;
-    height: 100vh;
+    height: auto;
     margin: 0;
     min-width: 360px;
     max-width: 400px;
@@ -13,7 +13,7 @@ body {
     justify-content: space-between;
     text-align: center;
     width: 360px;
-    overflow: hidden;
+    overflow: auto;
     padding-left: 5%;
     padding-right: 5%;
 }
@@ -116,6 +116,7 @@ main {
     line-height: 20px;
     letter-spacing: -2%;
     transition: box-shadow 0.3s  ease-in-out; /* 부드러운 전환 효과 */
+    margin-top: 310px;
 }
 
 .signin_btn:disabled {

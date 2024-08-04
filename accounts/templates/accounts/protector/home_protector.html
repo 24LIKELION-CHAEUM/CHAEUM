@@ -26,7 +26,8 @@
             </section>
             <section class="cards-section">
                 <div class="card">
-                    <div class="card-content">
+                    <a href="{% url 'tip' %}" class="nav-item">
+                        <div class="card-content">
                         <div class="card-text">
                             <p class="card-description">효과적인 관리를 위한</p>
                             <h3 class="card-title">시니어 꿀팁</h3>
@@ -34,8 +35,9 @@
                         <div class="card-icon">
                             <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
                         </div>
-                    </div>
-                    <img src="{% static 'img/home_smile.svg' %}"  class="card-image-placeholder" alt="" />
+                        </div>
+                        <img src="{% static 'img/home_smile.svg' %}"  class="card-image-placeholder" alt="" />
+                    </a>
                 </div>
                 <div class="card">
                     <div class="card-content">

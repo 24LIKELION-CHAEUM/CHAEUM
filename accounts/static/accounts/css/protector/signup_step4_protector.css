@@ -91,12 +91,19 @@ main {
     letter-spacing: -2%;
 }
 
-.search {
+.searchbtn {
     position: absolute;
     width: 20px;
-    top: 43px;
+    height: 24px; 
+    top: 42px;
     right: 16px;
     margin: 0;
+    background-image: url('/static/img/search.svg');
+    background-size: 100%; 
+    background-position: top center; 
+    background-repeat: no-repeat; 
+    border: none;
+    background-color: transparent;
 }
 
 .input_id, .input_password {

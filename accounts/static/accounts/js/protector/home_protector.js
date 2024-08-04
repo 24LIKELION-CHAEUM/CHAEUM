@@ -41,21 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
     }
 
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            closeModal();
-        }
-    });
-
     cancelBtn.addEventListener('click', function() {
         closeModal();
     });
 
     confirmBtn.addEventListener('click', function() {
         closeModal();
-        // 동의 시 추가 작업이 필요한 경우 여기에 작성
     });
 
-    // 페이지 로드 시 모달 표시
-    showModal();
+    // 처음 방문 시에만 모달 표시
+    const hasVisited = localStorage.getItem('hasVisited_P');
+    if (!hasVisited) {
+        showModal();
+        localStorage.setItem('hasVisited_P', 'true');
+    }
 });

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/protector/tip.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>
+                <span class="comment_login">시니어 꿀팁</span>
+            </div>
+        </main>
+        <img src="{% static 'img/tip.png' %}" alt="설명">
+    </div>
+</body>
+</html>

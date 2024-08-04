@@ -27,8 +27,8 @@
                     {% for date in dates %}
                     <div class="day {% if date == selected_date %}active{% endif %}" data-date="{{ date|date:'Y-m-d' }}">
                         <a href="?date={{ date|date:'Y-m-d' }}">
-                                <div>{{ date|date_kr }}</div>
-                                <div>{{ date|date:'j' }}</div>
+                                <div class="day-name">{{ date|date_kr }}</div>
+                                <div class="day-date">{{ date|date:'j' }}</div>
                             </a>
                         </div>
                     {% endfor %}
@@ -92,6 +92,26 @@
                             </div>
                             {% endfor %}
                         {% endif %}
+                        <!--<div class="comment-list2">
+                            <div class="comment-item2">
+                                <img class="comment-emoji2"src="{% static 'img/default_profile.png' %}" alt="프로필">
+                                <div class="comment-details2">
+                                    <div class="comment-title-time2">
+                                        <div class="comment-title2">이름</div>
+                                    </div>
+                                    <div class="comment-reason2">아직 한마디를 남기지 않았어요</div>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="comment-list2">
+                            <div class="comment-item2">
+                                <div class="comment-details2">
+                                    <div class="comment-title-time2">
+                                    </div>
+                                    <div class="comment-reason2">아직 한마디를 남기지 않았어요</div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
                 {% endfor %}

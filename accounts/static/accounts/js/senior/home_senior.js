@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 처음 방문 시에만 모달 표시
-    const hasVisited = localStorage.getItem('hasVisited');
+    const hasVisited = localStorage.getItem('hasVisited_S');
     if (!hasVisited) {
         showModal();
-        localStorage.setItem('hasVisited', 'true');
+        localStorage.setItem('hasVisited_S', 'true');
     }
 });

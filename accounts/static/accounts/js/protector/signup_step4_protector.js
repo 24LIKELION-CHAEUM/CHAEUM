@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('myModal');
     const modalBackdrop = document.querySelector('.modal-backdrop');
     const relationSpan = document.querySelector('.relation');
+    const searchForm = document.getElementById('search-form');
     let selectedItem = null;
 
     // 프로필 클릭 시
@@ -48,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedItem) {
                 selectedItem.querySelector('.profile-checkmark').style.display = 'block';
                 selectedItem.classList.remove('selected');
+                searchForm.style.display = 'none'; // 검색창 숨기기
+                selectedItem.querySelector('.profile-checkmark').style.display = 'none'; // 체크마크 숨기기
             }
 
             signinBtn.disabled = false; // 버튼 활성화

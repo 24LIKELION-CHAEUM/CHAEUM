@@ -28,6 +28,9 @@ def home_senior(request):
 def main(request):
     return render(request, 'accounts/main.html')
 
+def tip(request):
+    return render(request, 'accounts/protector/tip.html')
+
 @login_required
 def profile(request):
     user_profile = UserProfile.objects.get(user=request.user)

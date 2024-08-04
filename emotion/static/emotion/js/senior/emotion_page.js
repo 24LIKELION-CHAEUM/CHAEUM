@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const moodReason = document.querySelectorAll('.mood-reason');
     const selectedDateKr = "{{ selected_date|date:'Y년 n월 j일' }}";
     const daysOfWeek = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-    const dayOfWeekElement = document.getElementById('day-of-week');
     const activeDay = document.querySelector('.day.active');
 
     let selectedEmotionText = null;
@@ -47,14 +46,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const month = date.getMonth() + 1;
         const day = date.getDate();
         return `${year}년 ${month}월 ${day}일`;
-    }
-
-    function updateDayOfWeek(dateString) {
-        const date = new Date(dateString);
-        const dayOfWeek = daysOfWeek[date.getDay()];
-        if (dayOfWeekElement) {
-            dayOfWeekElement.textContent = dayOfWeek;
-        }
     }
 
     if (activeDay) {

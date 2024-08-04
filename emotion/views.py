@@ -6,6 +6,7 @@ from .forms import EmotionForm, ProtectorCommentForm
 from datetime import datetime, timedelta
 from accounts.models import UserProfile, Relationship
 from django.utils import timezone
+import calendar
 
 @login_required
 def emotion_page(request):
@@ -13,8 +14,12 @@ def emotion_page(request):
     start_date = today - timedelta(days=today.weekday())
     dates = [start_date + timedelta(days=i) for i in range(7)]
 
-    selected_date = request.GET.get('date', str(today))
-    selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+    selected_date_str = request.GET.get('date', str(today))
+    selected_date = datetime.strptime(selected_date_str, '%Y-%m-%d').date()
+    day_of_week_kr = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"][selected_date.weekday()]
+
+    print(f"Selected date: {selected_date}, Day of week: {day_of_week_kr}")  # 디버그용 로그
+
     user_profile = UserProfile.objects.get(user=request.user)
 
     if user_profile.user_type == 'senior':
@@ -26,11 +31,15 @@ def emotion_page(request):
         emotions = Emotion.objects.filter(user__in=seniors, date=selected_date)
         template = 'emotion/protector/emotion_page.html'
 
-    return render(request, template, {
+    context = {
         'dates': dates,
         'selected_date': selected_date,
+        'day_of_week': day_of_week_kr,  # 요일 정보 전달
         'emotions': emotions,
-    })
+    }
+
+    return render(request, template, context)
+
 
 @login_required
 def emotion_create(request):

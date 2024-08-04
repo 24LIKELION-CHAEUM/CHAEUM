@@ -156,6 +156,10 @@ body {
     display: flex;
 }
 
+.reject-request-button {
+    margin-right: 20px;
+}
+
 .accept-request-button, .reject-request-button, .remove-guardian-button {
     font-family: 'semibold';
     font-size: 12px;

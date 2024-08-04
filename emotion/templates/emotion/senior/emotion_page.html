@@ -72,8 +72,8 @@
                 </div>
             </div>
             <div class="comment-section">
-                <div class="comment-list">
                         {% if emotion.protector_comment %}
+                        <div class="comment-list">
                             {% for protector in emotion.user.userprofile.protectors %}
                             <div class="comment-item">
                                 {% if protector.profile_image %}
@@ -85,7 +85,7 @@
                                 <div class="comment-details">
                                     <div class="comment-title-time">
                                         <div class="comment-title">{{ protector.user.username }}</div>
-                                        <div class="comment-time">{{ emotion.comment_time|time:"H:i" }}</div> <!-- 댓글 작성 시간 표시 -->
+                                        <div class="comment-time">{{ emotion.comment_time|time:"H:i" }}</div>
                                     </div>
                                     <div class="comment-reason" id="comment-reason">{{ emotion.protector_comment }}</div>
                                 </div>

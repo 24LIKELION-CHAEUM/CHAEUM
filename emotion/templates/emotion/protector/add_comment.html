@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>보호자 한마디 추가</title>
+    {% load static %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,10 +59,35 @@
             font-size: 1em;
             margin-top: 10px;
         }
+        .back-button {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .back-button img {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
     </style>
+    <script>
+        function validateForm() {
+            var comment = document.getElementById("protector_comment").value;
+            if (comment.trim() === "") {
+                alert("내용을 입력해 주세요.");
+                return false; // 폼 제출을 중지합니다.
+            }
+            return true; // 폼 제출을 허용합니다.
+        }
+    </script>
 </head>
 <body>
-    <h2>보호자 한마디 추가</h2>
+    <div class="back-button">
+        <a href="{% url 'senior_page' %}">
+            <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+        </a>
+    </div>
+    <h2>한마디 남기기</h2>
 
     <div class="emotion-entry">
         <span class="emoji">
@@ -71,7 +97,7 @@
                 😐
             {% elif emotion.emotion == 'sad' %}
                 😢
-            {% elif emotion.emotion == 'angry' %}
+            {% elif emotion.emotion.emotion == 'angry' %}
                 😡
             {% endif %}
         </span>
@@ -84,10 +110,10 @@
         </div>
     </div>
 
-    <form method="post">
+    <form method="post" onsubmit="return validateForm()">
         {% csrf_token %}
         <div class="form-group">
-            <textarea name="protector_comment" placeholder="한마디를 남겨주세요">{{ form.protector_comment.value }}</textarea>
+            <textarea id="protector_comment" name="protector_comment" placeholder="한마디를 남겨주세요">{{ form.protector_comment.value }}</textarea>
         </div>
         <button type="submit" class="submit-button">한마디 남기기</button>
     </form>

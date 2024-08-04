@@ -34,5 +34,6 @@ def poke_page(request):
         'users': users,
         'query': query,
         'user_poke_counts': user_poke_counts,
-        'last_poked_times': last_poked_times
+        'last_poked_times': last_poked_times,
+        'user_profile': user_profile  # user_profile 변수를 컨텍스트에 추가
     })

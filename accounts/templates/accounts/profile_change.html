@@ -4,65 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>내 정보 수정하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/profile_change.css' %}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .button-container {
-            text-align: right;
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .profile-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
+        @import url("{% static 'css/fonts.css' %}");
     </style>
 </head>
 <body>
     {% load static %}
-    <h2>내 정보 수정하기</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="profile_image">프로필 사진</label>
-            {% if user_profile.profile_image %}
-                <img src="{{ user_profile.profile_image.url }}" alt="Profile Image" class="profile-image">
-            {% else %}
-                <img src="{% static 'default_profile.png' %}" alt="Default Profile Image" class="profile-image">
-            {% endif %}
-            <input type="file" id="profile_image" name="profile_image">
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="goBack()">취소</span>
+                <div class="modal-title">내 정보 수정하기</div>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile-picture-edit">
+                    {% if user_profile.profile_image %}
+                        <img src="{{ user_profile.profile_image.url }}" alt="Profile Image" class="profile-picture-large">
+                    {% else %}
+                        <img src="{% static 'default_profile.png' %}" alt="Default Profile Image" class="profile-picture-large">
+                    {% endif %}
+                    <input type="file" class="edit-icon" id="profile_image" name="profile_image">
+                </div>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" value="{{ user_profile.name }}" required placeholder="이름을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">생년월일</label>
+                    <input type="text" id="birthdate" placeholder="생년월일 8자를 입력해주세요" name="birth_date" value="{{ user_profile.birth_date|date:"Ymd" }}" required>
+                    <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                </div>
+                <button type="submit" id="submit-button" class="submit-button" disabled>저장</button>
+            </form>
         </div>
-        <div class="form-group">
-            <label for="name">이름</label>
-            <input type="text" id="name" name="name" value="{{ user_profile.name }}" required>
-        </div>
-        <div class="form-group">
-            <label for="birth_date">생년월일</label>
-            <input type="date" id="birth_date" name="birth_date" value="{{ user_profile.birth_date|date:"Y-m-d" }}" required>
-        </div>
-        <div class="button-container">
-            <button type="submit">저장</button>
-        </div>
-    </form>
+    </div>
+    <script src="{% static 'accounts/js/profile_change.js' %}"></script>
 </body>
 </html>

@@ -21,5 +21,5 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('profile/change/', views.profile_change, name='profile_change'),
     path('accept_protector_request/', views.accept_protector_request, name='accept_protector_request'),
-    path('remove_protector/', views.remove_protector, name='remove_protector'),
+    path('remove_connection/', views.remove_connection, name='remove_connection'),
 ]

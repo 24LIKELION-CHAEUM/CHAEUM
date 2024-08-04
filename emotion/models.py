@@ -15,6 +15,7 @@ class Emotion(models.Model):
     emotion = models.CharField(max_length=10, choices=EMOTION_CHOICES)
     description = models.TextField(blank=True)
     protector_comment = models.TextField(blank=True)  # 보호자의 한마디 필드 추가
+    comment_time = models.DateTimeField(null=True, blank=True)  # 보호자가 한마디를 남긴 시간 필드 추가
 
     def __str__(self):
         return f"{self.user.username} - {self.date} - {self.emotion}"

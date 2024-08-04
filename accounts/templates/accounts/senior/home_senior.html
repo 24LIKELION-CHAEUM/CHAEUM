@@ -25,19 +25,19 @@
             </section>
             <section class="cards-section">
                 <div class="card">
-                    <a href="/html/senior/emotion.html" class="nav-item">
-                    <div class="card-content">
-                        <div class="card-text">
-                            <p class="card-description">감정 살피기의 첫걸음</p>
-                            <h3 class="card-title">오늘의 감정</h3>
+                    <a href="{% url 'emotion_page' %}" class="nav-item">
+                        <div class="card-content">
+                            <div class="card-text">
+                                <p class="card-description">감정 살피기의 첫걸음</p>
+                                <h3 class="card-title">오늘의 감정</h3>
+                            </div>
+                            <div class="card-icon">
+                                <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
+                            </div>
                         </div>
-                        <div class="card-icon">
-                            <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
-                        </div>
-                    </div>
-                    <img src="{% static 'img/home_smile.svg' %}"  class="card-image-placeholder" alt="" />
-                </a>
-                </div>
+                        <img src="{% static 'img/home_smile.svg' %}" class="card-image-placeholder" alt="" />
+                    </a>
+                </div>                
                 <div class="card">
                     <a href="/html/senior/todo.html" class="nav-item">
                         <div class="card-content">

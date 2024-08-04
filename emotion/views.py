@@ -5,6 +5,7 @@ from .models import Emotion
 from .forms import EmotionForm, ProtectorCommentForm
 from datetime import datetime, timedelta
 from accounts.models import UserProfile, Relationship
+from django.utils import timezone
 
 @login_required
 def emotion_page(request):
@@ -83,11 +84,15 @@ def add_comment(request, emotion_id):
         if request.method == 'POST':
             form = ProtectorCommentForm(request.POST, instance=emotion)
             if form.is_valid():
-                form.save()
-                return redirect('emotion_page')
+                emotion = form.save(commit=False)
+                emotion.comment_time = timezone.now()  # 현재 시간을 comment_time에 저장
+                emotion.save()
+                return redirect('senior_page')
         else:
             form = ProtectorCommentForm(instance=emotion)
         
         return render(request, 'emotion/protector/add_comment.html', {'form': form, 'emotion': emotion})
     else:
-        return redirect('emotion_page')
+        return redirect('senior_page')
+
+

@@ -1,0 +1,271 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    width : 100%;
+}
+.modal {
+    width : 100%;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    width: 100%;
+    transition: bottom 0.3s ease-in-out;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.close {
+    position: absolute;
+    left: 0;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.modal-title {
+    font-size: 18px;
+    line-height: 34px;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.recorded-emotion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 36px;
+    background-color: #F7F8FA;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.span1,.span2 {
+    font-family: 'body3';
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -2%;
+    margin-top: 4px;
+}
+
+.span1{
+    color: #242427;
+}
+
+.span2{
+    color: #6838FF;
+}
+
+.record-info {
+    display: block;
+    font-family: 'label';
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    text-align: start;
+    color: #7B7B7E;
+    margin-top: 7px;
+    margin-bottom: 24px;
+}
+
+.emotion-title, .hour {
+    font-family: 'body3';
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -2%;
+    margin-top: 24px;
+    margin-bottom: 8px;
+}
+
+.emotions {
+    display: flex;
+    justify-content: space-between;
+    /**justify-content: space-around;에서 변경함*/
+    margin-bottom: 20px;
+}
+
+.emotion-emoji{
+    font-size: 22px;
+    margin-top: 12px;
+    padding-bottom: 5px;
+}
+
+.emotions {
+    display: flex;
+    gap: 10px;
+}
+
+.emotion-card {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid #B2B2B4;
+    width: 70px;
+    height: 78px;
+    border-radius: 10px;
+    cursor: pointer;
+    color: #7B7B7E;
+    padding: 12px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.emotion-card.selected {
+    border-color: #8F6CFF;
+    color: #8F6CFF;
+}
+
+.emotion-card .emoji {
+    font-size: 24px;
+}
+
+.emotion-cards{
+    margin-top: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.emotion-card input {
+    display: none;
+}
+.emotion-card label {
+    display: block;
+    font-size: 14px;
+}
+
+.time-inputs {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+    align-items: center;
+}
+
+.time-inputs .time-input {
+    width: 60px;
+    height: 48px;
+}
+
+.time-inputs input {
+    text-align: center;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #B2B2B4;
+    color: #000000;
+    border-radius: 12px;
+    font-size: 14px;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.form-group input::placeholder {
+    color: #B2B2B4;
+}
+
+.form-group input:focus {
+    box-shadow: 0 0 10px rgba(143, 108, 255, 0.15);
+    border-color: #8F6CFF;
+    outline: none;
+}
+
+#error-message {
+    color: #EA1C00;
+    font-family: 'label' ;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    margin-top: 8px;
+}
+
+.error-message.hidden {
+    display: none;
+}
+
+.submit-button {
+    background-color: #8F6CFF;
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 46px;
+    transition: 0.3s ease-in-out;
+}
+
+.submit-button:disabled {
+    background-color: #7B7B7E;
+    cursor: not-allowed;
+}
+
+@media screen and(max-width: 430px){
+    body{
+        width: 360px;
+    }
+}
+
+a{
+    text-decoration : none;
+}
+
+selected_date {
+    color: white;
+    background-color: #8F6CFF;
+    border-radius: 10px;
+}
+
+.plus-button {
+    width: 20px; 
+    height: 20px; 
+    background: url('https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg') no-repeat center center; /**임시로 이미지...^^..*/
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+}
+
+.plus-button.disabled {
+    background: url('https://image.utoimage.com/preview/cp872722/2022/12/202212008462_500.jpg') no-repeat center center; 
+    pointer-events: none;
+    cursor: not-allowed;
+}

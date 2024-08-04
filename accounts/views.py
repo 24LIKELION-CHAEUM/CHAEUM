@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
@@ -60,12 +60,13 @@ def profile_change(request):
 def accept_protector_request(request):
     if request.method == 'POST':
         protector_id = request.POST.get('protector_id')
-        relationship_type = request.POST.get('relationship')
         user_profile = get_object_or_404(UserProfile, user=request.user)
         try:
             protector_profile = UserProfile.objects.get(user__id=protector_id)
             relationship = Relationship.objects.get(senior=user_profile, protector=protector_profile, pending=True)
+            
             if 'accept' in request.POST:
+                relationship_type = request.POST.get('relationship', '기타')  # 기본 값으로 '기타' 사용
                 relationship.relationship_type = relationship_type
                 relationship.pending = False
                 relationship.save()
@@ -77,18 +78,35 @@ def accept_protector_request(request):
     return redirect('profile')
 
 @csrf_protect
-def remove_protector(request):
+@login_required
+def remove_connection(request):
     if request.method == 'POST':
-        protector_id = request.POST.get('protector_id')
-        user_profile = UserProfile.objects.get(user=request.user)
+        # 요청에서 삭제할 관계의 사용자 ID를 가져옴
+        user_id = request.POST.get('user_id')
+        current_user_profile = UserProfile.objects.get(user=request.user)
+
         try:
-            protector_profile = UserProfile.objects.get(user__id=protector_id)
-            relationship = Relationship.objects.get(senior=user_profile, protector=protector_profile)
+            # 삭제할 사용자 프로필을 찾음
+            other_user_profile = UserProfile.objects.get(user__id=user_id)
+
+            if current_user_profile.user_type == 'senior':
+                # 현재 사용자가 시니어인 경우, 보호자와의 관계를 삭제
+                relationship = Relationship.objects.get(senior=current_user_profile, protector=other_user_profile)
+            elif current_user_profile.user_type == 'protector':
+                # 현재 사용자가 보호자인 경우, 시니어와의 관계를 삭제
+                relationship = Relationship.objects.get(senior=other_user_profile, protector=current_user_profile)
+            else:
+                return JsonResponse({'error': '잘못된 사용자 유형입니다.'}, status=400)
+
+            # 관계 삭제
             relationship.delete()
-            return redirect('profile')
+            return HttpResponseRedirect('/accounts/profile/')  # 프로필 페이지로 리디렉션
+
+        except UserProfile.DoesNotExist:
+            return JsonResponse({'error': '해당 사용자를 찾을 수 없습니다.'}, status=404)
         except Relationship.DoesNotExist:
-            return redirect('profile')
-    return redirect('profile')
+            return JsonResponse({'error': '해당 관계를 찾을 수 없습니다.'}, status=404)
+    return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
 
 def signup_step1(request):
     if request.method == 'POST':

@@ -49,9 +49,8 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
-
-
 
 .myprofile-item {
     display: flex;
@@ -63,13 +62,14 @@ main {
     position: relative;
     margin-top: 8px;
     box-shadow: 0 0 6px rgba(143, 108, 255, 0.15);
+    padding-left: 10px;
 }
 
 .guardian-item, .request-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 360px;
+    width: 350px;
     height: 80px;
     border-radius: 12px;
     position: relative;
@@ -150,7 +150,7 @@ main {
     border: none;
     cursor: pointer;
     position: absolute; 
-    right: 12px;
+    right: 8%;
     text-decoration: underline;
     font-family: 'semibold';
     font-size: 12px;

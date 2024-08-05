@@ -13,8 +13,9 @@ router.register(r'notifications', NotificationViewSet)
 urlpatterns = [
     # path('api/', include(router.urls)),
     path('', include(router.urls)),
-    path('senior/todo/', views.senior_todolist, name='senior_todolist'),
-    path('senior/alarm/', views.senior_alarmlist, name='senior_alarmlist'),
+    path('todo/', views.todolist, name='todolist'),
+    path('alarm/', views.alarmlist, name='alarmlist'),
     path('senior/welfare/', views.senior_welfare, name='senior_welfare'),
-    
+
+
 ]

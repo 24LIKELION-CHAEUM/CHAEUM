@@ -11,7 +11,14 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.permissions import IsAuthenticated
 
+from django.shortcuts import render
 
+def senior_todolist(request):
+    return render(request, 'tasks/senior/todo.html')
+def senior_alarmlist(request):
+    return render(request, 'tasks/senior/alarm.html')
+def senior_welfare(request):
+    return render(request, 'tasks/senior/welfare.html')
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()

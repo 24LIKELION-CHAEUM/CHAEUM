@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/todo.css">
+    <style>
+        @import url(css/fonts.css);
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="static/img/arrow_back.svg" alt="뒤로가기">
+                </button>
+                <span class="title">오늘의 할 일</span>
+            </div>
+            <div class="calendar">
+                <div class="week" id="week-calendar"></div>
+            </div>
+            <div class="date">
+                <div class="date-info">
+                    <div class="full-date" id="full-date"></div>
+                    <div class="day-of-week-container">
+                        <div class="day-of-week" id="day-of-week"></div>
+                        <img src="static/img/add_activated.svg" alt="add" class="plus-button" id="plus-button"/>
+                    </div>
+                </div>
+            </div>
+            <div class="tasks" id="tasks">
+                <div class="task">
+                    <div class="task-icon"><img src="static/img/default.png" alt=""></div>
+                    <div class="task-info">
+                        <div class="task-title"></div>
+                        <div class="task-time"></div>
+                    </div>
+                    <div class="task-status">
+                        <img src="static/img/check_unactivated.svg" alt="체크">
+                    </div>
+                    
+                </div>
+            </div>
+        </main>
+
+        <!-- modal -->
+        <div class="modal-backdrop"></div>
+        <div id="modal1" class="modal1">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" onclick="closeModal()">취소</span>
+                    <div class="modal-title">추가할 일 선택하기</div>
+                </div>
+                <div class="option">
+                    <div class="option-icon">💊</div>
+                    <div class="option-info">
+                        <div class="option-title">투약할 약 추가하기</div>
+                        <div class="option-time">
+                            <span class="highlight">최대 3개</span><span class="normal">까지 등록할 수 있어요</span>
+                        </div>
+                    </div>
+                    <div class="next1" id="next1">
+                        <img src="static/img/arrow_next.svg" alt="next">
+                    </div>
+                </div>
+                <div class="option">
+                    <div class="option-icon">✅</div>
+                    <div class="option-info">
+                        <div class="option-title">다른 할 일 추가하기</div>
+                        <div class="option-time">
+                            <span class="normal">전화, 산책 등과 같이 </span><span class="highlight">다양한 할 일</span><span class="normal">을 등록할 수 있어요</span>
+                        </div>
+                    </div>
+                    <div class="next2" id="next2">
+                        <img src="static/img/arrow_next.svg" alt="next">
+                    </div>
+                </div>
+                <button id="submit-button" class="submit-button" disabled>다음</button>
+            </div>
+        </div>       
+        
+        <!-- modal 3 -->
+        <div id="modal3" class="modal3">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" onclick="closeModal()">취소</span>
+                    <div class="modal-title">약 추가하기</div>
+                </div>
+                <div class="mediation">
+                    <div class="mediation-title">💊 등록된 약</div>
+                    <div class="mediation-status" id="mediation-status">없음</div>
+                </div>
+                <div class="record-info">최대 3개까지 약을 등록할 수 있어요</div>
+                <div class="form-group">
+                    <label for="reason">투약하는 약의 이름</label>
+                    <input type="text" id="reason" placeholder="투약하는 약의 이름을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label for="hour" class="hour">투약 시간</label>
+                    <div class="time-inputs">
+                        <input type="text" id="hour" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                        <div>시</div>
+                        <input type="text" id="minute" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                        <div>분</div>
+                    </div>
+                    <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                </div>
+                <div class="form-group">
+                    <label for="repeat" class="repeat-title">투약반복</label>
+                    <div class="repeat">
+                        <div class="repeat-btn">월</div>
+                        <div class="repeat-btn">화</div>
+                        <div class="repeat-btn">수</div>
+                        <div class="repeat-btn">목</div>
+                        <div class="repeat-btn">금</div>
+                        <div class="repeat-btn">토</div>
+                        <div class="repeat-btn">일</div>
+                    </div>
+                </div>
+                <button id="submit-button3" class="submit-button3" disabled>추가</button>
+            </div>
+        </div>
+
+        <!-- modal 2 -->
+    <div id="modal2" class="modal2">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="closeModal()">취소</span>
+                <div class="modal-title">다른 할 일 등록하기</div>
+            </div>
+            <div class="form-group">
+                <label for="reason">할 일의 이름</label>
+                <input type="text" id="reason2" placeholder="할 일을 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label for="hour" class="hour">시간</label>
+                <div class="time-inputs2">
+                    <input type="text" id="hour2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>시</div>
+                    <input type="text" id="minute2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>분</div>
+                </div>
+                <div id="error-message2" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+            </div>
+            <div class="form-group">
+                <label for="repeat" class="repeat-title">할 일 반복</label>
+                <div class="repeat">
+                    <div class="repeat-btn2">월</div>
+                    <div class="repeat-btn2">화</div>
+                    <div class="repeat-btn2">수</div>
+                    <div class="repeat-btn2">목</div>
+                    <div class="repeat-btn2">금</div>
+                    <div class="repeat-btn2">토</div>
+                    <div class="repeat-btn2">일</div>
+                </div>
+            </div>
+            <button id="submit-button2" class="submit-button2" disabled>추가</button>
+        </div>
+    </div>
+    <script src="/js/senior/todo.js"></script>
+</body>
+</html>

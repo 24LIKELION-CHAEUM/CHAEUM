@@ -35,13 +35,22 @@ body {
     padding: 15px 20px;
     box-shadow: 0 0 5px rgba(216, 215, 222, 0.5);
 }
+.profile-image-large,
+.default-profile-image {
+    margin-top: -10px;
+    width: 60px;
+    height: 60px;
+    margin-left: -10px;
+}
 #user-name {
-    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-bottom: 5px;
     color: #242427;
     font-family: 'semibold';
     font-size: 16px;
 }
 #user-birthdate{
+    margin-left: 10px;
     font-family: 'body3';
     color: #7b7b7e;
 }
@@ -58,10 +67,12 @@ body {
     object-fit: cover;
     margin-right: 10px;
 }
-.header h2 {
+h2{ 
+    padding-top: 20px;
     font-family: 'body1';
     text-align: center;
     font-size: 18px;
+    padding-bottom: -30px;
 }
 .task{
     display: flex;
@@ -117,6 +128,7 @@ body {
     font-size: 16px;
     color: #242427;
     margin-top: 30px;
+    text-align: left;
 }
 .task img{
     width: 24px;
@@ -127,25 +139,26 @@ hr {
     border-top: 1px solid #e0e0e0;
     margin: 10px 0;
 }
-.emotion{
+.emoji{
+    align-items: center;
     background-color: #ffffff;
     border-radius: 10px;
-    margin-top: 5px;
+    margin-top: 25px;
     margin-left: 5px;
+
 }
-.emotion-text {
+.details{
+    width: 100%;
+}
+.details #emotion-one {
     display: flex;
     align-items: center;
     font-family: 'semibold';
     font-style: 16px;
 }
-.emotion-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
-.emotion-time{
+.details .time{
+    padding-bottom: 25px;
     display: flex;
     font-family: 'label';
     font-size: 12px;
@@ -154,27 +167,18 @@ hr {
     white-space: nowrap;
 
 }
-.emotion-reason{
+.description{
     color: #7b7b7e;
     font-family: 'medium';
     font-size:12px;
-    margin-top: 5px;
+    margin-top: -10px;
 }
-.emotion-text img {
-    margin-right: 10px;
-    height: 40px;
-    width: 40px;
 
-}
-.emotion-details {
-    display: flex;
-    flex-direction: column;
-}
 .emotion-text.no-emotion {
     color: #7b7b7e;
     font-family: 'semibold';
 }
-.btn {
+.add-comment {
     background-color: #ffffff;
     color: #242427;
     cursor: pointer;
@@ -185,7 +189,7 @@ hr {
     border-radius: 10px;
     padding: 15px 20px;
     width: 100%;
-
+   margin-left: -20px;
 }
 .btn.disabled {
     color: #d3d3d3;
@@ -288,10 +292,7 @@ hr {
     }
     
 }
-/* 기본 프로필 이미지를 위한 클래스 */
-.default-profile-image {
-    background: none; /* 배경을 없앰 */
-}
+
 <!--nav-->
 footer {
     margin: 0;

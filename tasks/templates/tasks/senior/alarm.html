@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tasks/css/alarm.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="container">
+        <main>
+            <div class="header">
+                <button type="button" class="back-button" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="대체 텍스트">
+                </button>           
+                <span class="header-text">읽지 않은 알림</span> 
+            </div>
+            
+
+            <div class="notification-list">
+            <!--is read==true 때 보라색 되도록-->
+                <div class="notification-item">
+                    <img src="{%static 'img/task.png' %}" class="notification-image" alt="대체 텍스트">
+                    <div class="notification-details">
+                        <div class="notification-meta">
+                            <span class="task-date">오늘의 할 일</span>
+                            <span class="task-time"> | 1시간 전</span>
+                        </div>
+                        <div class="notification-title">고혈압약</div>
+                        <div class="notification-message">홍길동 님 고혈압약을 투약할 시간이에요!</div>
+                    </div>
+                </div>
+                
+            </div>
+
+        </main>
+    </div>
+    <script>
+        const staticUrls = {
+            taskImg: "{% static 'img/task.png' %}",
+            riceImg: "{% static 'img/rice.png' %}",
+            medicineImg: "{% static 'img/med.png' %}",
+            checkActivatedImg: "{% static 'img/check_activated.svg' %}",
+            checkUnactivatedImg: "{% static 'img/check_unactivated.svg' %}"
+        };
+    </script>
+
+    <script src="{% static 'tasks/js/senior/alarm.js' %}"></script>
+</body>
+</html>

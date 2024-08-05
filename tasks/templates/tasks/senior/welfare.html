@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation으로 마커 표시하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'tasks/css/welfare.css' %}"> 
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="map-container">
+        <div class="search-bar">
+            <input type="text" class="input-field" id="search-input" placeholder="복지시설을 검색해보세요"/>
+            <img src="{% static 'img/search.svg' %}" id="search-button" class="search-button" alt="검색" />
+        </div>
+        <div id="map"></div>
+    </div>
+    <footer class="navbar">
+        <a href="{% url 'home_senior' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_home_active.svg' %}" alt="홈" class="nav-icon">
+            <span class="nav-text">홈</span>
+        </a>
+        <a href="{% url 'senior_welfare' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="복지시설" class="nav-icon">
+            <span class="nav-text">복지시설</span>
+        </a>
+        <a href="{% url 'poke_page' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_finger_inactive.svg' %}" alt="콕찌르기" class="nav-icon">
+            <span class="nav-text">콕찌르기</span>
+        </a>
+        <a href="{% url 'profile' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_user_inactive.svg' %}" alt="마이페이지" class="nav-icon">
+            <span class="nav-text">마이페이지</span>
+        </a>
+    </footer>
+    <div id="bottom-sheet" class="bottom-sheet">
+        <div class="bottom-sheet-header" id="bottom-sheet-handle">
+            <img src = "{% static 'img/bottombar.svg' %}" alt="bottom-bar">
+        </div>
+        <div id="user-location" class="user-location">
+        </div>
+        <hr>
+        
+        <div id="facility-list" class="facility-list">
+            <!-- Facility items will be dynamically added here -->
+        </div>
+        
+    </div>
+
+    <!-- 팝업창 -->
+    <div id="call-popup" class="popup">
+        <h3>시설 전화번호</h3>
+        <p id="popup-facility-name">(시설 이름)에 전화할까요?</p>
+        <div class="popup-buttons">
+            <button class="popup-button cancel" id="cancel-call">취소</button>
+            <button class="popup-button call" id="confirm-call">전화하기</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=660fd081dd70fd0b49320bdb2fd17672&libraries=services"></script>
+    <script src="{% static 'tasks/js/senior/welfare.js' %}"></script>
+
+</body>
+</html>

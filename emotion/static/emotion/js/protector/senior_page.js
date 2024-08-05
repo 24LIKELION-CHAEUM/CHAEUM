@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
+    const token = localStorage.getItem('access_token');
+
+    console.log(token)
     // API를 통해 할 일 목록을 받아오는 함수
     async function fetchTasks() {
-        const url = `http://127.0.0.1:8000/senior_tasks/`;
+        const url = `http://127.0.0.1:8000/tasks/senior_tasks/`;
         try {
            
             const response = await fetch(url, {
@@ -15,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
+            console.log(data);
             displayTasks(data);
         } catch (error) {
             console.error('Error fetching tasks:', error);
@@ -28,45 +31,54 @@ document.addEventListener('DOMContentLoaded', function() {
 
         tasksContainer.innerHTML = ''; // 기존 내용을 지우기
 
-        tasks.forEach((task, index) => {
-            const taskTime = new Date();
-            const [hours, minutes] = task.time.split(':');
-            taskTime.setHours(hours);
-            taskTime.setMinutes(minutes);
+           tasks.forEach((task, index) => {
+               const taskTime = new Date();
+               const [hours, minutes, seconds] = task.time.split(':');
+               taskTime.setHours(hours);
+               taskTime.setMinutes(minutes);
+               taskTime.setSeconds(seconds);
 
-            const timeDiff = (currentTime - taskTime) / (1000 * 60 * 60); // 시간 차이 계산
-            let timeStatus = '';
-            let taskClass = '';
+               const timeDiff = (currentTime - taskTime) / (1000 * 60 * 60); // 시간 차이 계산
+               let timeStatus = '';
+               let taskClass = '';
 
-            if (task.completed) {
-                timeStatus = `<s>${task.title}</s>`;
-                taskClass = 'completed';
-            } else {
-                if (timeDiff > 0) {
-                    timeStatus = `<span style="color: red;">${task.title}</span>`;
-                    taskClass = 'overdue';
-                } else {
-                    timeStatus = task.title;
-                    taskClass = 'upcoming';
-                }
-            }
+               if (task.is_completed) {
+                   timeStatus = `<s>${task.title}</s>`;
+                   taskClass = 'completed';
+               } else {
+                   if (timeDiff > 0) {
+                       timeStatus = `<span style="color: red;">${task.title}</span>`;
+                       taskClass = 'overdue';
+                   } else {
+                       timeStatus = task.title;
+                       taskClass = 'upcoming';
+                   }
+               }
 
-            const taskElement = `
-                <div class="task ${taskClass}">
-                    <img src="/assets/${task.type.toLowerCase()}.png" alt="${task.title} icon">
-                    <div class="task-details">
-                        <div>${timeStatus}</div>
-                        <div class="time">${task.notify_time}</div>
-                    </div>
-                    <div class="task-status">
-                        <div>${task.completed ? '완료' : '완료 전'}</div>
-                        ${!task.completed && timeDiff > 0 ? `<div class="status">예정 시간으로부터 ${Math.floor(timeDiff)}시간 지났어요</div>` : ''}
-                    </div>
+               // 시간 형식을 오전/오후 시:분으로 변환
+               const taskHours = taskTime.getHours();
+               const taskMinutes = taskTime.getMinutes();
+               const period = taskHours >= 12 ? '오후' : '오전';
+               const formattedHours = taskHours % 12 || 12; // 0시는 12시로 표시
+               const formattedTime = `${period} ${formattedHours}:${taskMinutes.toString().padStart(2, '0')}`;
+
+               const imageUrl = `/static/img/${task.type.toLowerCase()}.png`;
+               const taskElement = `
+            <div class="task ${taskClass}">
+                <img src="${imageUrl}" alt="${task.title} icon">
+                <div class="task-details">
+                    <div>${timeStatus}</div>
+                    <div class="time">${formattedTime}</div>
                 </div>
-                ${index < tasks.length - 1 ? '<hr>' : ''}
-            `;
-            tasksContainer.innerHTML += taskElement;
-        });
+                <div class="task-status">
+                    <div>${task.is_completed ? '완료' : '완료 전'}</div>
+                    ${!task.is_completed && timeDiff > 0 ? `<div class="status">예정 시간으로부터 ${Math.floor(timeDiff)}시간 지났어요</div>` : ''}
+                </div>
+            </div>
+            ${index < tasks.length - 1 ? '<hr>' : ''}
+        `;
+               tasksContainer.innerHTML += taskElement;
+           });
     }
 
     // 초기 할 일 목록 표시

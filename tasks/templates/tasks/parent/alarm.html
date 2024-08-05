@@ -14,7 +14,7 @@
         <main>
             <div class="header">
                 <button type="button" class="back-button" onclick="window.history.back()">
-                    <img src="static/img/arrow_back.svg" alt="대체 텍스트">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="대체 텍스트">
                 </button>           
                 <span class="header-text">읽지 않은 알림</span> 
             </div>
@@ -23,7 +23,7 @@
             <div class="notification-list">
             
                 <div class="notification-item">
-                    <img src="static/img/medecine.png" class="notification-image" alt="대체 텍스트">
+                    <img src="{%static 'img/medecine.png' %}" class="notification-image" alt="대체 텍스트">
                     <div class="notification-details">
                         <div class="notification-meta">
                             <span class="task-date"></span>

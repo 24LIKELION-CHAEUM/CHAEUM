@@ -167,7 +167,7 @@ main {
 }
 
 .task.completed .task-status img {
-    content: url('/assets/check_activated.svg'); 
+    content: url('/img/check_activated.svg'); 
 }
 
 .task-time {

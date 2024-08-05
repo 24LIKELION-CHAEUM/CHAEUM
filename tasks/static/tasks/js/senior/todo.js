@@ -122,14 +122,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
             }
             return `
-                <div class="task" data-id="${task.id}">
+                <div class="task ${task.is_complete ? 'completed' : ''}" data-id="${task.id}">
                     <div class="task-icon"><img src="${imageSrc}" alt=""></div>
                     <div class="task-info">
-                        <div class="task-title">${task.title}</div>
+                        <div class="task-title" style="text-decoration: ${task.is_complete ? 'line-through' : 'none'}">${task.title}</div>
                         <div class="task-time">${task.time}</div>
                     </div>
                     <div class="task-status">
-                        <img src="${task.completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
+                        <img src="${task.is_complete ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
                     </div>
                 </div>
             `;
@@ -155,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const data = await response.json();
             console.log('Task created:', data);
             fetchTasks(today.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            fetchUnreadCount(); // 읽지 않은 알림 개수 업데이트
         } catch (error) {
             console.error('Error creating task:', error);
         }
@@ -180,6 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
             fetchTasks(today.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
             medicationCount++;
             updateMedicationCount();
+            fetchUnreadCount(); // 읽지 않은 알림 개수 업데이트
         } catch (error) {
             console.error('Error creating medication:', error);
         }
@@ -208,7 +210,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-
     tasks.forEach(task => {
         const checkButton = task.querySelector('.task-status img');
         checkButton.addEventListener('click', () => {
@@ -236,7 +237,6 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
-
 
     // 폼 제출 이벤트 리스너
     if (taskForm) {

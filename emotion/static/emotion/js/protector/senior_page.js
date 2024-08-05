@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
-    
     // API를 통해 할 일 목록을 받아오는 함수
     async function fetchTasks() {
         const url = `http://127.0.0.1:8000/senior_tasks/`;
         try {
-           
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -21,15 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-       // 할 일 목록 화면에 표시하기
-       function displayTasks(tasks) {
+    // 할 일 목록 화면에 표시하기
+    function displayTasks(tasks) {
         const tasksContainer = document.getElementById('task-list');
         const currentTime = new Date();
 
         tasksContainer.innerHTML = ''; // 기존 내용을 지우기
 
         tasks.forEach((task, index) => {
-            const taskTime = new Date();
+            const taskTime = new Date(currentTime);
             const [hours, minutes] = task.time.split(':');
             taskTime.setHours(hours);
             taskTime.setMinutes(minutes);
@@ -71,8 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 초기 할 일 목록 표시
     fetchTasks();
-    
-    
 
     // 바텀 시트 및 오버레이 제어
     const overlay = document.getElementById('overlay');
@@ -80,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeButton = document.getElementById('close-sheet');
     const commentInput = document.getElementById('comment');
     const submitButton = document.querySelector('.sheet-submit');
+    const openButton = document.getElementById('open-sheet'); // Make sure this element exists
 
     openButton.addEventListener('click', () => {
         if (!openButton.disabled) {

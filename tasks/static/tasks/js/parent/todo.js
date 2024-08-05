@@ -83,25 +83,33 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Toggle task completion
-    function toggleTaskCompletion(event) {
-        const taskElement = event.target.closest('.task');
-        const taskId = taskElement.dataset.id;
-        const isCompleted = event.target.dataset.completed === 'true';
+function toggleTaskCompletion(event) {
+    const taskElement = event.target.closest('.task');
+    const taskId = taskElement.dataset.id;
+    const isCompleted = event.target.dataset.completed === 'true';
 
-        // Toggle UI
-        taskElement.classList.toggle('completed');
-        event.target.dataset.completed = !isCompleted;
+    // Toggle UI
+    taskElement.classList.toggle('completed');
+    event.target.dataset.completed = !isCompleted;
 
-        // Update server (assuming there's an endpoint for this)
-        fetch(`http://127.0.0.1:8000/senior_tasks/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({ completed: !isCompleted })
-        }).catch(error => console.error('Error updating task:', error));
-    }
+    // Update server (assuming there's an endpoint for this)
+    fetch(`http://127.0.0.1:8000/senior_tasks/${taskId}/`, {
+        method: 'PATCH',  // Using PATCH to update the task
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ completed: !isCompleted })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .catch(error => console.error('Error updating task:', error));
+}
+
 
     // Handle errors
     function handleError(status) {

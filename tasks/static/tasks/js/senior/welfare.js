@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.innerHTML = `
                     <div class="facility-info">
                         ${index === 0 ? `<h2>${title}</h2>` : ''}
-                        <img src=" "{% static 'img/facility.svg' %}" alt="Facility Image">
+                        <img src=" "{% static 'static/img/facility.svg' %}" alt="Facility Image">
                         <div class="facility-name">${truncatedTitle}</div>
                         <div class="facility-sub">${truncatedSub}</div>
                         <div class="facility-distance">${distance}km | 도보 ${walkingTime}분</div>

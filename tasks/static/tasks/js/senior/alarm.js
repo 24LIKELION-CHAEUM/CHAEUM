@@ -39,13 +39,13 @@ document.addEventListener("DOMContentLoaded", function() {
             let imageSrc;
             switch (notification.type) {
                 case 'MEAL':
-                    imageSrc = staticUrls.riceImg;
+                    imageSrc = '/img/rice.png';
                     break;
                 case 'MED':
-                    imageSrc = staticUrls.medicineImg;
+                    imageSrc = '/assets/medecine.png';
                     break;
                 case 'TASK':
-                    imageSrc = staticUrls.taskImg;
+                    imageSrc = '/assets/task.png';
                     break;
             }
             notificationItem.innerHTML = `

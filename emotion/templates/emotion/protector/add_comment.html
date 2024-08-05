@@ -13,7 +13,7 @@
             justify-content: center;
         }
         
-        .page-title {
+        .modal-title {
             flex-grow: 1;
             text-align: center;
             font-family: 'body1';
@@ -24,13 +24,12 @@
             padding-bottom: 28px;
         }
         
-        .section-title {
-            text-align: start;
-            font-family: 'semibold';
-            font-size: 16px;
-            line-height: 20px;
-            letter-spacing: -2%;
-            padding-top: 32px;
+        .form-group label {
+            font-family: 'body3';
+            font-size:14px
+            display: block;
+            margin-bottom: 10px;
+            text-align: left;
         }
         
         .header {
@@ -302,13 +301,7 @@
             margin-bottom : 362px;
         }
         
-        .form-group label {
-            display: block;
-            font-family: 'semibold';
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-        
+       
         .form-group input {
             width: 100%;
             padding: 8px;
@@ -342,6 +335,7 @@
         }
         
         #name, #birthdate {
+            color:#B2B2B4;
             width: 90%;
             margin-top: 8px;
             padding-top: 15px;
@@ -454,15 +448,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close" onclick="goBack()">취소</span>
-                <div class="modal-title">내 정보 수정하기</div>
+                <div class="modal-title">한마디 남기기</div>
             </div>
 
             <form method="post" onsubmit="return validateForm()">
                 {% csrf_token %}
-                <div class="form-group">
-                    <label for="name">한마디</label>
-                    <input type="text" id="name" name="protector_comment" value="{{ form.protector_comment.value }}" required placeholder="이름을 입력해주세요">
-                </div>
+                        <div class="form-group">
+                            <label for="name">한마디</label>
+                            <input type="text" id="name" name="protector_comment" value="{{ form.protector_comment.value }}" required placeholder= "한마디를 남겨주세요">
+                        </div>
                 <button type="submit" id="submit-button" class="submit-button" disabled>남기기</button>
             </form>
         </div>

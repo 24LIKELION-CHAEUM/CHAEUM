@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/todo.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tasks/css/todo.css' %} ">
     <style>
-        @import url(css/fonts.css);
+        @import url("{% static 'css/fonts.css' %}");
     </style>
 </head>
 <body>
@@ -13,7 +14,7 @@
         <main>
             <div class="topbar">
                 <button type="button" class="back_btn" onclick="window.history.back()">
-                    <img src="static/img/arrow_back.svg" alt="뒤로가기">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
                 </button>
                 <span class="title">오늘의 할 일</span>
             </div>
@@ -25,19 +26,19 @@
                     <div class="full-date" id="full-date"></div>
                     <div class="day-of-week-container">
                         <div class="day-of-week" id="day-of-week"></div>
-                        <img src="static/img/add_activated.svg" alt="add" class="plus-button" id="plus-button"/>
+                        <img src="{% static 'img/add_activated.svg' %}" alt="add" class="plus-button" id="plus-button"/>
                     </div>
                 </div>
             </div>
             <div class="tasks">
                 <div class="task">
-                    <div class="task-icon"><img src="static/img/default.png" alt=""></div>
+                    <div class="task-icon"><img src="{%static 'img/default_profile.png' %}" alt=""></div>
                     <div class="task-info">
                         <div class="task-title"></div>
                         <div class="task-time"></div>
                     </div>
                     <div class="task-status">
-                        <img src="static/img/check_unactivated.svg" alt="체크">
+                        <img src="{% static 'img/check_unactivated.svg' %}" alt="체크">
                     </div>
                 </div>
             </div>
@@ -82,6 +83,16 @@
                 <button id="submit-button2" class="submit-button2" disabled>추가</button>
             </div>
         </div>
-        <script src="/js/parent/todo.js"></script>
+        <script>
+            const staticUrls = {
+                taskImg: "{% static 'img/task.png' %}",
+                riceImg: "{% static 'img/rice.png' %}",
+                medicineImg: "{% static 'img/pill.png' %}",
+                checkActivatedImg: "{% static 'img/check_activated.svg' %}",
+                checkUnactivatedImg: "{% static 'img/check_unactivated.svg' %}"
+            };
+        </script>
+        <script src="{% static 'tasks/js/parent/todo.js' %}"></script>
+    </body>
     </body>
 </html>

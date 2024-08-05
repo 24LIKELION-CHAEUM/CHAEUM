@@ -33,20 +33,19 @@ document.addEventListener("DOMContentLoaded", function() {
             notifyTime.setSeconds(seconds);
     
             const timeDiff = (currentTime - notifyTime) / (1000 * 60 * 60); // 시간 차이 계산
-    
             const notificationItem = document.createElement('div');
             notificationItem.className = `notification-item ${notification.is_read ? 'read' : ''}`;
             notificationItem.style.backgroundColor = notification.is_read ? 'white' : '#F6F4FF'; // 수정된 부분
             let imageSrc;
             switch (notification.type) {
                 case 'MEAL':
-                    imageSrc = '/img/rice.png';
+                    imageSrc = staticUrls.riceImg;
                     break;
                 case 'MED':
-                    imageSrc = '/assets/medecine.png';
+                    imageSrc = staticUrls.medicineImg;
                     break;
                 case 'TASK':
-                    imageSrc = '/assets/task.png';
+                    imageSrc = staticUrls.taskImg;
                     break;
             }
             notificationItem.innerHTML = `

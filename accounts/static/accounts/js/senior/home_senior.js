@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('access_token');
     const modal = document.getElementById('modal');
     const cancelBtn = document.getElementById('cancel-btn');
     const confirmBtn = document.getElementById('confirm-btn');

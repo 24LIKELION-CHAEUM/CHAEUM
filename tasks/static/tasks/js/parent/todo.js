@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+    const token = localStorage.getItem('access_token');
     const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
     const today = new Date();
     const currentDay = today.getDay(); // 0 (일요일)부터 6 (토요일)까지의 숫자
@@ -25,11 +25,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Fetch tasks from API
     async function fetchTasks() {
-        const token = localStorage.getItem('access_token');
+        
         try {
             const response = await fetch('http://127.0.0.1:8000/tasks/', {
                 headers: {
-                    'Authorization': 'Bearer <token>'
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (response.ok) {
@@ -43,20 +43,39 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Display tasks
+   // 할 일 목록 화면에 표시하기
     function displayTasks(tasks) {
-        taskList.innerHTML = tasks.map(task => `
-            <div class="task ${task.completed ? 'completed' : ''}" data-id="${task.id}">
-                <div class="task-icon"><img src="/assets/default.png" alt=""></div>
-                <div class="task-info">
-                    <div class="task-title">${task.title}</div>
-                    <div class="task-time">${task.time}</div>
+        const tasksContainer = document.getElementById('tasks');
+        if (!tasksContainer) {
+            console.error('tasksContainer element not found');
+            return;
+        }
+        tasksContainer.innerHTML = tasks.map(task => {
+            let imageSrc;
+            switch (task.type) {
+                case 'MEAL':
+                    imageSrc = staticUrls.riceImg;
+                    break;
+                case 'MED':
+                    imageSrc = staticUrls.medicineImg;
+                    break;
+                case 'TASK':
+                    imageSrc = staticUrls.taskImg;
+                    break;
+            }
+            return `
+                <div class="task" data-id="${task.id}">
+                    <div class="task-icon"><img src="${imageSrc}" alt=""></div>
+                    <div class="task-info">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-time">${task.time}</div>
+                    </div>
+                    <div class="task-status">
+                        <img src="${task.completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
+                    </div>
                 </div>
-                <div class="task-status">
-                    <img src="/assets/check_unactivated.svg" alt="체크" data-completed="${task.completed}">
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         document.querySelectorAll('.task-status img').forEach(img => {
             img.addEventListener('click', toggleTaskCompletion);
@@ -78,7 +97,7 @@ document.addEventListener("DOMContentLoaded", function() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer <token>'
+                'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ completed: !isCompleted })
         }).catch(error => console.error('Error updating task:', error));

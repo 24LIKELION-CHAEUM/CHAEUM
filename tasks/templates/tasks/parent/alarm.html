@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/alarm.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tasks/css/alarm.css' %}">
     <style>
-        @import url(css/fonts.css);
+        @import url("{% static 'css/fonts.css' %}");
     </style>
 </head>
 <body>
@@ -53,6 +54,15 @@
 
         </main>
     </div>
-    <script src="/js/parent/alarm.js"></script>
+    <script>
+        const staticUrls = {
+            taskImg: "{% static 'img/task.png' %}",
+            riceImg: "{% static 'img/rice.png' %}",
+            medicineImg: "{% static 'img/pill.png' %}",
+            checkActivatedImg: "{% static 'img/check_activated.svg' %}",
+            checkUnactivatedImg: "{% static 'img/check_unactivated.svg' %}"
+        };
+    </script>
+    <script src="{% static 'tasks/js/parent/alarm.js' %}"></script>
 </body>
 </html>

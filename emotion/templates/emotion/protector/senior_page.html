@@ -14,9 +14,10 @@
 <body>
     <div id="wrap">
         <main id="main-content">
+            <h2>시니어</h2>
             <div class="container">
                 <div class="header">
-                    <h2>시니어</h2>
+                    
                     {% if seniors %}
                         {% for senior in seniors %}
                         <div class="user-info">
@@ -32,7 +33,7 @@
                                 <div id="user-birthdate">{{ senior.birth_date|date:"Y.m.d" }}</div>
                             </div>
                         </div>
-                        <h2>길동님의 오늘의 할 일</h2>
+                        <h2>{{ senior.name }}님의 오늘의 할 일</h2>
                         <div class="section" id="task-list">
                             <!-- 할 일 목록이 여기에 추가됩니다. -->
                         </div>

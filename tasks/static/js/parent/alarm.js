@@ -35,9 +35,22 @@ document.addEventListener("DOMContentLoaded", function() {
             const timeDiff = (currentTime - notifyTime) / (1000 * 60 * 60); // 시간 차이 계산
     
             const notificationItem = document.createElement('div');
-            notificationItem.className = 'notification-item';
+            notificationItem.className = `notification-item ${notification.is_read ? 'read' : ''}`;
+            notificationItem.style.backgroundColor = notification.is_read ? 'white' : '#F6F4FF'; // 수정된 부분
+            let imageSrc;
+            switch (notification.type) {
+                case 'MEAL':
+                    imageSrc = '/img/rice.png';
+                    break;
+                case 'MED':
+                    imageSrc = '/assets/medecine.png';
+                    break;
+                case 'TASK':
+                    imageSrc = '/assets/task.png';
+                    break;
+            }
             notificationItem.innerHTML = `
-                <img src="/assets/medecine.png" class="notification-image" alt="대체 텍스트">
+                <img src="${imageSrc}" class="notification-image" alt="대체 텍스트">
                 <div class="notification-details">
                     <div class="notification-meta">
                         <span class="task-date">오늘의 할 일</span>

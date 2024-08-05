@@ -1,0 +1,240 @@
+body {
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#wrap {
+    margin-top: 0;
+    margin-bottom: 68px; /* 네비게이션 바의 높이만큼 여백 추가 */
+    width: 100%;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+.page-title {
+    flex-grow: 1;
+    text-align: center;
+    font-family: 'body1';
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: -2%;
+    padding-top: 36px;
+    padding-bottom: 28px;
+}
+
+.search-input {
+    text-align: start;
+    height: 48px;
+    padding-top: 19px;
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.search-button, .clear-button {
+    position: absolute;
+    width: 20px;
+    top: 43px;
+    right: 16px;
+    margin: 0;
+}
+
+.input-field {
+    width: 90%;
+    margin-top: 8px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    border: 1px solid #B2B2B4;
+    border-radius: 12px;
+    font-family: 'body3';
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -2%;
+    transition: box-shadow 0.3s  ease-in-out;
+}
+
+.input-field:focus {
+    box-shadow: 0 0 10px rgba(143, 108, 255, 0.15);
+    border: 1px solid #8F6CFF;
+    outline: none;
+}
+
+.result-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 360px;
+    height: 96px;
+    border-radius: 12px;
+}
+
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background-color: black;
+    border-radius: 50%;
+    margin-right: 12px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    flex-grow: 1;
+    align-items: flex-start;
+}
+
+.profile-name {
+    font-family: 'body2';
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -2%;
+    padding-top: 4px;
+}
+
+.profile-status {
+    font-family: 'label';
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    padding-top: 4px;
+    color: #8C8C8E;
+}
+.checkmark-label {
+    font-family: 'semibold';
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    color: #ffffff;
+}
+
+.dropdown-checkmark.disabled {
+    background-color: #7B7B7E;
+}
+
+.role, .timestamp {
+    margin-right: 5px;
+    font-family: 'body2';
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    color: #7B7B7E;
+}
+
+.profile-checkmark {
+    display: flex;
+    width: 112px;
+    height: 29px;
+    justify-content: center;
+    align-items: center;
+    background-color: #8F6CFF;
+    border-radius: 5px;
+    gap: 8px;
+    cursor: pointer;
+    border: 0;
+}
+
+.profile-checkmark.disabled {
+    background-color: #7B7B7E;
+}
+
+.profile-checkmark img {
+    width: 15px;
+    height: 15px;
+}
+
+.dropdown-menu {
+    width: 85%;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 182px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(143, 108, 255, 0.15);
+    position: absolute;
+    z-index: 1000;
+    left: 50%; 
+    transform: translateX(-50%); 
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    margin-bottom: 12px; 
+}
+
+.dropdown-item:last-child {
+    margin-bottom: 0;
+}
+
+.dropdown-profile-picture {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    background-color: black;
+    border-radius: 50%;
+    margin-left: 6px;
+    margin-right: 12px;
+}
+
+.dropdown-profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    flex-grow: 1;
+    align-items: flex-start;
+}
+
+.dropdown-profile-name {
+    font-family: 'body2';
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -2%;
+    padding-top: 4px;
+}
+
+.dropdown-checkmark-label {
+    font-family: 'semibold';
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    color: #ffffff;
+}
+
+.dropdown-checkmark {
+    display: flex;
+    width: 88px;
+    height: 29px;
+    justify-content: center;
+    align-items: center;
+    background-color: #8F6CFF;
+    border-radius: 5px;
+    gap: 8px;
+    margin-right: 6px;
+}
+
+.dropdown-checkmark img {
+    width: 15px;
+    height: 15px;
+}
+
+@media screen and(max-width: 430px){
+    body{
+        width: 360px;
+    }
+}

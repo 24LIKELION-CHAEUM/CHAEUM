@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/login.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>           
+                <span class="comment_login">로그인</span> 
+            </div>
+            <div class="input">
+                <form id="loginForm" method="post">
+                    {% csrf_token %}
+                    <div class="signin_input">
+                        <span class="title_id">아이디</span> 
+                        <input class="input_id" name="username" placeholder="아이디를 입력해주세요" required>
+                    </div>
+                    <div class="signin_input">
+                        <span class="title_password">비밀번호</span> 
+                        <input class="input_password" type="password" name="password" placeholder="비밀번호를 입력해주세요" required>
+                    </div>
+                    <button id="signin_btn" class="signin_btn" type="submit" disabled>로그인</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'accounts/js/login.js' %}"></script>
+</body>
+</html>

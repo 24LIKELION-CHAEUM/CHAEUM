@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/home.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main id="main-content">
+            <section class="header-section">
+                <img class="logo-button" src="{% static 'img/logo.png' %}" alt="logo"/>
+                <p class="user-greeting">{{ user.username }}님은 건강한 정신을 위해</p>
+                <div class="day-counter">
+                    <span class="day-count" id="day-count">{{ days_since_signup }}</span> 일 째 노력 중!
+                </div>
+            </section>            
+            <section class="image-section">
+                <img class="image-placeholder" src="{% static 'img/home_graphic.png' %}" alt="logo"/>
+            </section>
+            <section class="cards-section">
+                <div class="card">
+                    <a href="{% url 'emotion_page' %}" class="nav-item">
+                        <div class="card-content">
+                            <div class="card-text">
+                                <p class="card-description">감정 살피기의 첫걸음</p>
+                                <h3 class="card-title">오늘의 감정</h3>
+                            </div>
+                            <div class="card-icon">
+                                <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
+                            </div>
+                        </div>
+                        <img src="{% static 'img/home_smile.svg' %}" class="card-image-placeholder" alt="" />
+                    </a>
+                </div>                
+                <div class="card">
+                    <a href="/html/senior/todo.html" class="nav-item">
+                        <div class="card-content">
+                        <div class="card-text">
+                            <p class="card-description">할 일은 튼튼히!</p>
+                            <h3 class="card-title">오늘의 할 일</h3>
+                        </div>
+                        <div class="card-icon">
+                            <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
+                        </div>
+                    </div>
+                    <img src="{% static 'img/home_task.svg' %}"  class="card-image-placeholder" alt="" />                
+                </a>
+                </div>
+            </section>
+            <section class="notifications-section">
+                <a href="/html/senior/alarm.html">
+                <div class="notification">
+                    <img src="{% static 'img/alarm.svg' %}" class="notification-image-placeholder"alt="" />
+                    <div class="notification-text">
+                        <p class="notification-description">깜빡 잊지 않도록!</p>
+                        <div class="notification-row">
+                            <h3 class="notification-title">읽지 않은 알림</h3>
+                            <span id="notification-count" class="notification-count">9999</span>
+                        </div>
+                    </div>
+                    <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
+                </div>
+                </a>
+            </section>
+        </main>
+
+        <!--modal-->
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h2 class="modal-title">'온움'(이)가 사용자의 위치에 접근<br>하는데 동의하시겠습니까?</h2>
+                <p class="modal-description">동의하면 복지시설 정보 등의 혜택을 누릴 수 있어요</p>
+                <div class="modal-buttons">
+                    <button id="cancel-btn" class="modal-btn cancel-btn">취소</button>
+                    <button id="confirm-btn" class="modal-btn confirm-btn">동의하기</button>
+                </div>
+            </div>
+        </div>
+
+        
+        <!--navigation-->
+        <footer class="navbar">
+            <a href="{% url 'home_senior' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_home_active.svg' %}" alt="홈" class="nav-icon">
+                <span class="nav-text">홈</span>
+            </a>
+            <a href="/html/senior/welfare.html" class="nav-item">
+                <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="복지시설" class="nav-icon">
+                <span class="nav-text">복지시설</span>
+            </a>
+            <a href="{% url 'poke_page' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_finger_inactive.svg' %}" alt="콕찌르기" class="nav-icon">
+                <span class="nav-text">콕찌르기</span>
+            </a>
+            <a href="{% url 'profile' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_user_inactive.svg' %}" alt="마이페이지" class="nav-icon">
+                <span class="nav-text">마이페이지</span>
+            </a>
+        </footer>
+    </div>
+    <script src="{% static 'accounts/js/senior/home_senior.js' %}"></script>
+</body>
+</html>

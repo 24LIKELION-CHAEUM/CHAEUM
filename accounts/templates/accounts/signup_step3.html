@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Step 3</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/signup_step3.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>           
+                <span class="comment_login">회원가입</span> 
+            </div>
+            <div class="progress">
+                <progress id="progress" max="100" value="50"></progress>
+            </div>
+            <div class="input">
+                <span class="input_type">이름과 생년월일을<br>입력해주세요</span> 
+                <form method="post" action="{% url 'signup_step3' %}">
+                    {% csrf_token %}
+                    <div class="signin_input form-group">
+                        <label class="title_id" for="input_name">이름</label>
+                        <input class="input_id" id="input_name" name="name" placeholder="이름을 입력해주세요" required>
+                        {% if form.name.errors %}
+                            <div class="error-message">{{ form.name.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="signin_input form-group">
+                        <label class="title_password" for="input_dob">생년월일</label>
+                        <input class="input_password" type="date" id="input_dob" name="birth_date" required>
+                        {% if form.birth_date.errors %}
+                            <div class="error-message">{{ form.birth_date.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <button id="signin_btn" class="signin_btn" type="submit" data-user-type="{{ user_type }}" disabled>
+                        {% if user_type == "senior" %}회원가입 완료{% else %}다음{% endif %}
+                    </button>
+                </form>                
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'accounts/js/signup_step3.js' %}"></script>
+</body>
+</html>

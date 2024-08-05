@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로필</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div id="wrap">
+        <main id="main-content">
+            <span class="page-title">마이페이지</span> 
+
+            <div class="myprofile-section">
+                <div class="myprofile-item">
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}" alt="Profile Image" class="myprofile-picture">
+                        {% else %}
+                            <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="myprofile-picture">
+                        {% endif %}
+                        <div class="myprofile-info">
+                            <div class="myprofile-details">
+                                <span class="myprofile-name">{{ user_profile.name }}</span>
+                                <span class="myprofile-relation">
+                                    {% if user_profile.user_type == 'senior' %}시니어{% else %}보호자{% endif %}
+                                </span>
+                            </div>
+                            <span class="myprofile-birthdate">
+                                {{ user_profile.birth_date|date:"Y.m.d" }}
+                            </span>
+                        </div>
+                        <a href="{% url 'profile_change' %}" class="my-edit-profile-button">수정</a>
+                    <!--<button class="my-edit-profile-button">수정</button>-->
+                </div>
+            </div>
+
+            {% if user_profile.user_type == 'senior' %}
+            <span class="section-title">연결된 보호자 목록</span> 
+            <div class="guardian-section">
+                    {% if user_profile.protectors %}
+                    {% for protector in user_profile.protectors %}
+                    <div class="guardian-item">
+                        {% if protector.profile_image %}
+                            <img src="{{ protector.profile_image.url }}" alt="Protector Profile Image" class="profile-picture">
+                        {% else %}
+                            <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="profile-picture">
+                        {% endif %}
+                        <div class="profile-info">
+                            <div class="profile-details">
+                                <span class="profile-birthdate">{{ protector.birth_date|date:"Y.m.d" }}</span>
+                                <span class="profile-relation"> | 
+                                    {% for relationship in protector.senior_relationships.all %}
+                                        {% if relationship.senior == user_profile %}
+                                            {{ relationship.relationship_type }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </span>
+                            </div>
+                            <div class="profile-name">{{ protector.name }}</div>
+                        </div>
+                        <form method="post" action="{% url 'remove_connection' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ protector.user.id }}">
+                            <button type="submit" class="remove-guardian-button">삭제</button>
+                        </form>
+                    </div>
+                {% endfor %}                
+                    {% else %}
+                        <p>등록된 보호자가 없습니다.</p>
+                    {% endif %}
+            </div>
+
+            <span class="section-title">보호자 연결 요청</span> 
+            <div class="request-section">
+                    {% if pending_requests %}
+                        {% for request in pending_requests %}
+                            <!--<div class="pending-request">-->
+                            <div class="request-item">
+
+                                {% if request.protector.profile_image %}
+                                    <img src="{{ request.protector.profile_image.url }}" alt="Pending Protector Profile Image" class="profile-picture">
+                                {% else %}
+                                    <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="profile-picture">
+                                {% endif %}
+                                <div class="profile-info">
+                                    <div class="profile-details">
+                                        <span class="profile-birthdate">{{ request.protector.birth_date|date:"Y.m.d" }}</span>
+                                    </div>
+                                    <div class="profile-name">{{ request.protector.name }}</div>
+                                </div>                                        
+                                <div class="button-container">
+                                    <form method="post" action="{% url 'accept_protector_request' %}">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="protector_id" value="{{ request.protector.user.id }}">
+                                        <div class="request-button">
+                                            <button type="submit" name="accept" class="accept-request-button">수락</button>
+                                            <button type="submit" name="reject" class="reject-request-button">거부</button>
+                                        </div>
+                                    </form>
+                                </div>                                
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                    {% endif %}
+            </div>
+
+
+            {% else %}
+            <span class="section-title">연결된 시니어 목록</span>          
+            <div class="guardian-section">
+                {% if user_profile.seniors %}
+                    {% for senior in user_profile.seniors %}
+                        <div class="guardian-item">
+                            {% if senior.profile_image %}
+                                <img src="{{ senior.profile_image.url }}" alt="Senior Profile Image" class="profile-picture">
+                            {% else %}
+                                <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="profile-picture">
+                            {% endif %}
+                            <div class="profile-info">
+                                <div class="profile-details">
+                                    <span class="profile-birthdate">{{ senior.birth_date|date:"Y.m.d" }} | 시니어</span>
+                                </div>
+                                <span class="profile-name">{{ senior.name }}</span>
+                            </div>
+                            <form method="post" action="{% url 'remove_connection' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="user_id" value="{{ senior.user.id }}">
+                                <button type="submit" class="remove-guardian-button">삭제</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                {% endif %}
+            {% endif %}
+            </div>
+    </main>
+        
+        <!-- Modal -->
+        <div class="modal-backdrop"></div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">취소</span>
+                    <div class="modal-title">내 정보 수정하기</div>
+                </div>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="profile-picture-edit">
+                        {% if user_profile.profile_image %}
+                            <img src="{{ user_profile.profile_image.url }}" alt="Profile Image" class="myprofile-picture">
+                        {% else %}
+                            <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="myprofile-picture">
+                        {% endif %}
+                        <input type="file" class="edit-icon" id="profile_image" name="profile_image">
+                    </div>                  
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" id="name" name="name" value="{{ user_profile.name }}" required placeholder="이름을 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label for="birthdate">생년월일</label>
+                        <input type="text" id="birthdate" placeholder="생년월일 8자를 입력해주세요" name="birth_date" value="{{ user_profile.birth_date|date:"Y-m-d" }}" required>
+                        <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                    </div>
+                    <button type="submit" id="submit-button" class="submit-button" disabled>저장</button>
+                </form>
+            </div>
+        </div>
+        
+        <!--navigation-->
+        <footer class="navbar">
+            {% if user_profile.user_type == 'senior' %}
+                <a href="{% url 'home_senior' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_home_inactive.svg' %}" alt="홈" class="nav-icon">
+                    <span class="nav-text">홈</span>
+                </a>
+                <a href="{'/html/welfare_facilities/''}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="복지시설" class="nav-icon">
+                    <span class="nav-text">복지시설</span>
+                </a>
+                <a href="{% url 'poke_page' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_finger_inactive.svg' %}" alt="콕찌르기" class="nav-icon">
+                    <span class="nav-text">콕찌르기</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_user_active.svg' %}" alt="마이페이지" class="nav-icon">
+                    <span class="nav-text">마이페이지</span>
+                </a>
+            {% elif user_profile.user_type == 'protector' %}
+                <a href="{% url 'home_protector' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_home_inactive.svg' %}" alt="홈" class="nav-icon">
+                    <span class="nav-text">홈</span>
+                </a>
+                <a href="{% url 'senior_page' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="시니어" class="nav-icon">
+                    <span class="nav-text">시니어</span>
+                </a>
+                <a href="{% url 'poke_page' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_finger_inactive.svg' %}" alt="콕찌르기" class="nav-icon">
+                    <span class="nav-text">콕찌르기</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_user_active.svg' %}" alt="마이페이지" class="nav-icon">
+                    <span class="nav-text">마이페이지</span>
+                </a>
+            {% endif %}
+        </footer>
+    </div>
+    <script src="{% static 'accounts/js/profile.js' %}"></script>
+</body>
+</html>

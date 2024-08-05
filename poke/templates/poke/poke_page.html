@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>콕찌르기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'poke/css/poke_page.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    {% load static %}
+    {% load get_item %}
+    <div id="wrap">
+        <main id="main-content">
+            <span class="page-title">콕찌르기</span> 
+            <form method="get" action="{% url 'poke_page' %}" class="search-input" id="search-input">
+                <input class="input-field" type="text" name="q" placeholder="콕 찌를 사람을 검색해보세요" value="{{ query|default_if_none:'' }}" id="search-query">
+
+                <!-- js 코드를 통해서 이미지 클릭시 form submit이 되도록 변경함-->
+                <img src="{% static 'img/search.svg' %}" id="search-button" class="search-button" alt=" " />
+                <!--<img src="/assets/x.svg" id="clear-button" class="clear-button" style="display: none;" alt="초기화" />-->
+            </form>
+
+            <div class="result-list">
+            {% if query %}
+                {% if users %}
+                    {% for user in users %}
+                    <div class="result-item">
+                        {% if user.userprofile.profile_image %}
+                            <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.username }}의 프로필 이미지" class="profile-picture">
+                        {% else %}
+                            <img src="{% static 'img/default_profile.png' %}" alt="기본 프로필 이미지" class="profile-picture">
+                        {% endif %}
+                            <div class="profile-info">
+                                <div class="profile-details">
+                                    {% if last_poked_times|get_item:user.id %}
+                                    <span class="role">{% if user_profile.user_type == 'senior' %}보호자{% else %}시니어{% endif %}</span>
+                                    <span class="timestamp">  | {{ last_poked_times|get_item:user.id|date:"H시 i분" }}</span>
+                                    {% endif %}
+                                </div>
+                                    <div class="profile-name">{{ user.username }}</div>
+                                    <div class="profile-status">{{ user_poke_counts|get_item:user.id }}번 째 콕 찌르는 중이에요!</div>
+                            </div>
+                            <form class="poke-form" id="poke-form" action="{% url 'poke_user' user.id %}" method="post">
+                                {% csrf_token %}
+                                <button class="profile-checkmark" id="profile-checkmark-{{ user.id }}">
+                                    <img src="{% static 'img/click.svg' %}" alt="선택됨" />
+                                    <div class="checkmark-label">나도 콕찌르기</div>
+                                </button>
+                            </form>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>검색 결과가 없습니다.</p>
+                {% endif %}
+            {% endif %}
+            </div>
+        </main>
+
+        <footer class="navbar">
+            {% if user_profile.user_type == 'senior' %}
+                <a href="{% url 'home_senior' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_home_inactive.svg' %}" alt="홈" class="nav-icon">
+                    <span class="nav-text">홈</span>
+                </a>
+                <a href="/html/welfare.html/" class="nav-item">
+                    <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="복지시설" class="nav-icon">
+                    <span class="nav-text">복지시설</span>
+                </a>
+                <a href="{% url 'poke_page' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_finger_active.svg' %}" alt="콕찌르기" class="nav-icon">
+                    <span class="nav-text">콕찌르기</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_user_inactive.svg' %}" alt="마이페이지" class="nav-icon">
+                    <span class="nav-text">마이페이지</span>
+                </a>
+            {% elif user_profile.user_type == 'protector' %}
+                <a href="{% url 'home_protector' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_home_inactive.svg' %}" alt="홈" class="nav-icon">
+                    <span class="nav-text">홈</span>
+                </a>
+                <a href="{% url 'senior_page' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="시니어" class="nav-icon">
+                    <span class="nav-text">시니어</span>
+                </a>
+                <a href="{% url 'poke_page' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_finger_active.svg' %}" alt="콕찌르기" class="nav-icon">
+                    <span class="nav-text">콕찌르기</span>
+                </a>
+                <a href="{% url 'profile' %}" class="nav-item">
+                    <img src="{% static 'img/nav/nav_user_inactive.svg' %}" alt="마이페이지" class="nav-icon">
+                    <span class="nav-text">마이페이지</span>
+                </a>
+            {% endif %}
+        </footer>            
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'poke/js/poke_page.js' %}"></script>
+</body>
+</html>

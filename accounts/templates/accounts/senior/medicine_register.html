@@ -1,0 +1,62 @@
+<!--
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투약할 약 등록하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/senior/medicine_register.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>
+                <span class="comment_signup">투약할 약 등록하기</span>
+            </div>
+            
+            <div class="recorded-emotion">
+                <div class="span1">💊 투약 시간을 등록해 주세요</div>
+                <div class="span2" id="recorded-emotion-status">없음</div>
+            </div>
+            <div class="record-info">최대 3개까지 약을 등록할 수 있어요</div>
+            <span class="title">약 등록하기</span>
+            <div class="form-group">
+                <label for="reason">투약하는 약의 이름</label>
+                <input type="text" id="reason" placeholder="투약하는 약의 이름을 입력해주세요">
+            </div>
+            <div class="form-group">
+                <label for="hour" class="hour">투약 시간</label>
+                <div class="time-inputs">
+                    <input type="text" id="hour" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>시</div>
+                    <input type="text" id="minute" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>분</div>
+                </div>
+                <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+            </div>
+            <div class="form-group">
+                <label for="emotion" class="emotion-title">투약반복</label>
+                <div class="emotions">
+                    <div class="emotion-btn">월</div>
+                    <div class="emotion-btn">화</div>
+                    <div class="emotion-btn">수</div>
+                    <div class="emotion-btn">목</div>
+                    <div class="emotion-btn">금</div>
+                    <div class="emotion-btn">토</div>
+                    <div class="emotion-btn">일</div>
+                </div>
+            </div>
+        </main>
+        <button id="submit-button2" class="submit-button2" disabled>등록</button>
+    </div>
+    <script src="{% static 'accounts/js/senior/medicine_register.js' %}"></script>
+</body>
+</html>
+-->

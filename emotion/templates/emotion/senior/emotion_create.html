@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>감정 작성</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'emotion/css/senior/emotion_create.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+
+<body>
+<!--modal-->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" onclick="goBack()">취소</span>
+            <div class="modal-title">오늘의 감정 기록하기</div>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="recorded-emotion">
+                <div class="span1">😊 기록된 오늘의 감정</div>
+                <div class="span2" id="recorded-emotion-status">없음</div>
+            </div>
+            <div class="record-info">오늘의 감정은 하루에 한 개 기록할 수 있어요</div>
+            <label for="emotion" class="emotion-title">감정</label>
+                <div class="emotion-cards">
+                    <div class="emotion-card" onclick="selectEmotion(this)">
+                        <input type="radio" id="happy" name="emotion" value="happy">
+                        <label for="happy">
+                            <div class="emoji">😊</div>
+                            행복
+                        </label>
+                    </div>
+                    <div class="emotion-card" onclick="selectEmotion(this)">
+                        <input type="radio" id="neutral" name="emotion" value="neutral">
+                        <label for="neutral">
+                            <div class="emoji">😐</div>
+                            평범
+                        </label>
+                    </div>
+                    <div class="emotion-card" onclick="selectEmotion(this)">
+                        <input type="radio" id="sad" name="emotion" value="sad">
+                        <label for="sad">
+                            <div class="emoji">😢</div>
+                            슬픔
+                        </label>
+                    </div>
+                    <div class="emotion-card" onclick="selectEmotion(this)">
+                        <input type="radio" id="angry" name="emotion" value="angry">
+                        <label for="angry">
+                            <div class="emoji">😠</div>
+                            분노
+                        </label>
+                    </div>
+                </div>
+            <div class="form-group">
+                <label for="hour" class="hour">감정을 느낀 시간</label>
+                <input type="hidden" id="time-field" name="time" value="{{ form.time.value }}">
+                <div class="time-inputs">
+                    <input type="text" id="hour" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>시</div>
+                    <input type="text" id="minute" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                    <div>분</div>
+                </div>
+                <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+            </div>
+            <div class="form-group">
+                <label for="reason">감정을 느낀 이유</label>
+                <input type="text" id="reason" name="description" placeholder="감정을 느낀 이유를 작성해주세요">
+            </div>
+            <button type="submit" id="submit-button"  class="submit-button" disabled>기록</button>
+        </form>
+    </div>
+</div>
+<script>
+    function selectEmotion(card) {
+        var cards = document.getElementsByClassName('emotion-card');
+        for (var i = 0; i < cards.length; i++) {
+            cards[i].classList.remove('selected');
+        }
+        card.classList.add('selected');
+    }
+    function goBack() {
+        window.history.back();
+    }
+</script>
+<script src="{% static 'emotion/js/senior/emotion_create.js' %}"></script>
+</body>
+</html>

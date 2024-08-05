@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/signup_step1.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main>
+            <div class="topbar">
+                <button type="button" class="back_btn" onclick="window.history.back()">
+                    <img src="{% static 'img/arrow_back.svg' %}" alt="뒤로가기">
+                </button>           
+                <span class="comment_signup">회원가입</span> 
+            </div>
+            <div class="progress">
+                <progress id="progress" max="100" value="0"></progress>
+            </div>
+            <div class="input">
+                <span class="input_type">가입 유형을<br>선택해주세요</span> 
+                <form id="user-type-form" method="post" action="{% url 'signup_step1' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="user_type" id="id_user_type">
+                    <div class="select_option">
+                        <div class="select" data-value="senior" onclick="selectOption(this)">
+                            <div class="header">
+                                <img src="{% static 'img/시니어.png' %}" alt="시니어">
+                                <span class="title">시니어</span> 
+                                <img class="check" src="{% static 'img/check_unactivated.svg' %}" alt="선택되지 않음">
+                            </div>
+                            <hr style="border: solid 1px #AFB8C1;">
+                            <div class="services">
+                                <span class="service1">이용 서비스</span>
+                                <span class="service2">알림 받기  긴급 알림 보내기  복지시설  정보  채팅</span>
+                            </div>
+                        </div>
+                        <div class="select" data-value="protector" onclick="selectOption(this)">
+                            <div class="header">
+                                <img src="{% static 'img/보호자.png' %}" alt="보호자">
+                                <span class="title">보호자</span> 
+                                <img class="check" src="{% static 'img/check_unactivated.svg' %}" alt="선택되지 않음">
+                            </div>
+                            <hr style="border: solid 1px #AFB8C1;">
+                            <div class="services">
+                                <span class="service1">이용 서비스</span>
+                                <span class="service2">알림 보내기  시니어 접속시간  확인하기  채팅</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 버튼을 form 내부에 두지만 따로 div로 감싸 위치를 조정 -->
+                    <div class="button-container">
+                        <button id="signin_btn" class="signin_btn" type="submit" disabled>다음</button>
+                    </div>
+                </form>
+            </div>            
+        </main>
+    </div>
+    <script src="{% static 'accounts/js/signup_step1.js' %}"></script>
+</body>
+</html>

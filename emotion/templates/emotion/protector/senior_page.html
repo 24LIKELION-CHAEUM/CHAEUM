@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시니어 감정 보기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}"> 
+    <link rel="stylesheet" href="{% static 'emotion/css/protector/senior_page.css' %}"> 
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <main id="main-content">
+            <div class="container">
+                <div class="header">
+                    <h2>시니어</h2>
+                    {% if seniors %}
+                        {% for senior in seniors %}
+                        <div class="user-info">
+                            <div class="user-image">
+                                {% if senior.profile_image %}
+                                    <img src="{{ senior.profile_image.url }}" alt="Senior Profile Image" class="profile-image-large">
+                                {% else %}
+                                    <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="profile-image-large default-profile-image">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <div id="user-name">{{ senior.name }} <span id="user-relation">{{ senior.relationship }}</span></div>
+                                <div id="user-birthdate">{{ senior.birth_date|date:"Y.m.d" }}</div>
+                            </div>
+                        </div>
+                        <h2>길동님의 오늘의 할 일</h2>
+                        <div class="section" id="task-list">
+                            <!-- 할 일 목록이 여기에 추가됩니다. -->
+                        </div>
+                        <h2>{{ senior.name }}님의 오늘의 감정</h2>
+                        <div class="section" id="emotion-section">
+                            {% if senior.today_emotion %}
+                            <div class="emotion-entry">
+                                <span class="emoji">
+                                    {% if senior.today_emotion.emotion == 'happy' %}
+                                        😊
+                                    {% elif senior.today_emotion.emotion == 'neutral' %}
+                                        😐
+                                    {% elif senior.today_emotion.emotion.emotion == 'sad' %}
+                                        😢
+                                    {% elif senior.today_emotion.emotion == 'angry' %}
+                                        😡
+                                    {% endif %}
+                                </span>
+                                <div class="details">
+                                    <div>
+                                        <span id="emotion-one">{{ senior.today_emotion.get_emotion_display }}</span>
+                                        <span class="time">{{ senior.today_emotion.time|time:"H:i" }}</span>
+                                    </div>
+                                    <div class="description">{{ senior.today_emotion.description }}</div>
+                                    <form method="get" action="{% url 'add_comment' senior.today_emotion.id %}">
+                                        <button type="submit" class="add-comment" {% if senior.has_comment %}disabled{% endif %}>한마디 남기기</button>
+                                    </form>
+                                </div>                                
+                            </div>                            
+                            {% else %}
+                                <p>아직 기록된 감정이 없습니다.</p>
+                            {% endif %}
+                        </div>                        
+                        {% endfor %}
+                    {% else %}
+                        <p>등록된 시니어가 없습니다.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </main>
+        <footer class="navbar">
+            <a href="{% url 'home_senior' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_home_inactive.svg' %}" alt="홈" class="nav-icon">
+                <span class="nav-text">홈</span>
+            </a>
+            <a href="{% url 'senior_page' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_building_active.svg' %}" alt="시니어" class="nav-icon">
+                <span class="nav-text">시니어</span>
+            </a>
+            <a href="{% url 'poke_page' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_finger_inactive.svg' %}" alt="콕찌르기" class="nav-icon">
+                <span class="nav-text">콕찌르기</span>
+            </a>
+            <a href="{% url 'profile' %}" class="nav-item">
+                <img src="{% static 'img/nav/nav_user_inactive.svg' %}" alt="마이페이지" class="nav-icon">
+                <span class="nav-text">마이페이지</span>
+            </a>
+        </footer>
+    </div>
+</body>
+</html>

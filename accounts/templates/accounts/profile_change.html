@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보 수정하기</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'accounts/css/profile_change.css' %}">
+    <style>
+        @import url("{% static 'css/fonts.css' %}");
+    </style>
+</head>
+<body>
+    {% load static %}
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close" onclick="goBack()">취소</span>
+                <div class="modal-title">내 정보 수정하기</div>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile-picture-edit">
+                    {% if user_profile.profile_image %}
+                        <img src="{{ user_profile.profile_image.url }}" alt="Profile Image" class="profile-picture-large"  id="profile-image-preview" >
+                    {% else %}
+                        <img src="{% static 'img/default_profile.png' %}" alt="Default Profile Image" class="profile-picture-large" id="profile-image-preview" >
+                    {% endif %}
+                        <label for="profile_image" class="edit-icon">
+                            <img src="{% static 'img/pencil.svg' %}" alt="Edit Icon">
+                        </label>
+                        <input type="file" id="profile_image" name="profile_image" class="edit-icon-input">
+                </div>
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" value="{{ user_profile.name }}" required placeholder="이름을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate">생년월일</label>
+                    <input type="date" id="birthdate" placeholder="생년월일 8자를 입력해주세요" name="birth_date" value="{{ user_profile.birth_date|date:"Y-m-d" }}" required>
+                </div>
+                <button type="submit" id="submit-button" class="submit-button" disabled>저장</button>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'accounts/js/profile_change.js' %}"></script>
+</body>
+</html>

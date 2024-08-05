@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'heading1';
+    src: url('/static/css/fonts/PRETENDARD-BOLD.OTF') format('opentype');
+    font-weight: bold;
+    /**
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'heading2';
+    src: url('/static/css/fonts/PRETENDARD-BOLD.OTF') format('opentype');
+    font-weight: bold;
+    /**
+    font-size: 22px;
+    line-height: 32px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'body1';
+    src: url('/static/css/fonts/PRETENDARD-BOLD.OTF') format('opentype');
+    font-weight: bold;
+    /**
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'body2';
+    src: url('/static/css/fonts/PRETENDARD-MEDIUM.OTF') format('opentype');
+    /**
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'body3';
+    src: url('/static/css/fonts/PRETENDARD-MEDIUM.OTF') format('opentype');
+    /**
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'label';
+    src: url('/static/css/fonts/PRETENDARD-REGULAR.OTF') format('opentype');
+    /**
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'semibold';
+    src: url('/static/css/fonts/PRETENDARD-SEMIBOLD.OTF') format('opentype');
+    /**
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -2%;
+    */
+    font-style: normal;
+}

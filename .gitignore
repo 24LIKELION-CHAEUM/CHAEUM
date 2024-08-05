@@ -1,0 +1,96 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+*.so
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+*.pot
+*.py[cod]
+*.sqlite3
+staticfiles
+media
+logs/
+
+# Virtualenv
+.env
+.venv
+venv/
+ENV/
+env/
+.venv/
+.ENV/
+env.bak/
+venv.bak/
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+# File-based project format
+
+# MacOS
+.DS_Store
+
+# Coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# IDE specific files
+### Intellij ###
+.vscode/
+# CMake
+cmake-build-*/
+
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+ modules.xml
+ .idea/misc.xml
+ *.ipr
+
+
+# Other generated files
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+.nox/
+.coverage*
+.cache/
+.hypothesis/
+.pytest_cache/
+cover/
+.scout/
+pylint/

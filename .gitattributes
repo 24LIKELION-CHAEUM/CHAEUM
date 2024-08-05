@@ -1,0 +1,7 @@
+# .gitattributes
+
+# 모든 SVG 파일은 LF 줄바꿈을 사용
+*.svg text eol=lf
+
+# 모든 텍스트 파일은 LF 줄바꿈을 사용
+* text=auto eol=lf

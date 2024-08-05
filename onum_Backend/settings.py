@@ -67,6 +67,8 @@ MIDDLEWARE = [
 #     'http://127.0.0.1:8000'
 # ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 ROOT_URLCONF = 'onum_Backend.urls'
 
 TEMPLATES = [

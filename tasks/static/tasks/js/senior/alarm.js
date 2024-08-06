@@ -64,6 +64,7 @@ ocument.addEventListener("DOMContentLoaded", function() {
             // 알림 읽음 처리 이벤트 리스너 추가
             notificationItem.addEventListener('click', () => {
                 markAsRead(notification.id);
+                window.location.href = '/todo';
             });
         });
 

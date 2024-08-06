@@ -241,3 +241,4 @@ function toggleTaskCompletion(event) {
     document.getElementById('full-date').textContent = fullDate;
     document.getElementById('day-of-week').textContent = `${dayOfWeek}요일`;
 });
+

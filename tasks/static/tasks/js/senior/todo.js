@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
     const today = new Date();
+    const koreaTime = new Date(today.setHours(today.getHours() + 9));
     const currentDay = today.getDay();
     const currentDate = today.getDate();
     const fullDate = today.toLocaleDateString('ko-KR', {
@@ -163,7 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Task created:', data);
-            fetchTasks(today.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
         } catch (error) {
             console.error('Error creating task:', error);
         }
@@ -186,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Medication created:', data);
-            fetchTasks(today.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
             medicationCount++;
             updateMedicationCount();
             fetchUnreadCount(); // 읽지 않은 알림 개수 업데이트
@@ -513,6 +514,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fullDateElement) fullDateElement.textContent = fullDate;
     if (dayOfWeekElement) dayOfWeekElement.textContent = `${dayOfWeek}요일`;
 
-    fetchTasks(today.toISOString().split('T')[0]);
+    fetchTasks(koreaTime.toISOString().split('T')[0]);
     updateMedicationCount();
 });

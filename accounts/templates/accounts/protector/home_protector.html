@@ -40,30 +40,34 @@
                     </a>
                 </div>
                 <div class="card">
-                    <div class="card-content">
-                        <div class="card-text">
-                            <p class="card-description">할 일은 튼튼히!</p>
-                            <h3 class="card-title">오늘의 할 일</h3>
+                    <a href="{% url 'todolist' %}" class="nav-item">
+                        <div class="card-content">
+                            <div class="card-text">
+                                <p class="card-description">할 일은 튼튼히!</p>
+                                <h3 class="card-title">오늘의 할 일</h3>
+                            </div>
+                            <div class="card-icon">
+                                <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
+                            </div>
                         </div>
-                        <div class="card-icon">
-                            <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
-                        </div>
-                    </div>
-                    <img src="{% static 'img/home_task.svg' %}"  class="card-image-placeholder" alt="" />                
+                        <img src="{% static 'img/home_task.svg' %}"  class="card-image-placeholder" alt="" />
+                    </a>
                 </div>
             </section>
             <section class="notifications-section">
-                <div class="notification">
-                    <img src="{% static 'img/alarm.svg' %}" class="notification-image-placeholder"alt="" />
-                    <div class="notification-text">
-                        <p class="notification-description">깜빡 잊지 않도록!</p>
-                        <div class="notification-row">
-                            <h3 class="notification-title">읽지 않은 알림</h3>
-                            <span id="notification-count" class="notification-count">9999</span>
+                <a href="{% url 'alarmlist' %}">
+                    <div class="notification">
+                        <img src="{% static 'img/alarm.svg' %}" class="notification-image-placeholder"alt="" />
+                        <div class="notification-text">
+                            <p class="notification-description">깜빡 잊지 않도록!</p>
+                            <div class="notification-row">
+                                <h3 class="notification-title">읽지 않은 알림</h3>
+                                <span id="notification-count" class="notification-count">9999</span>
+                            </div>
                         </div>
+                        <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
                     </div>
-                    <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
-                </div>
+                </a>
             </section>
         </main>
 
@@ -87,7 +91,7 @@
                 <span class="nav-text">홈</span>
             </a>
             <a href="{% url 'senior_page' %}" class="nav-item">
-                <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="시니어" class="nav-icon">
+                <img src="{% static 'img/nav/nav_senior_inactive.svg' %}" alt="시니어" class="nav-icon">
                 <span class="nav-text">시니어</span>
             </a>
             <a href="{% url 'poke_page' %}" class="nav-item">

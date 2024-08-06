@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG') == 'True'
 
-ALLOWED_HOSTS = ['43.201.81.113', '127.0.0.1']
+ALLOWED_HOSTS = ['43.201.81.113', '127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -62,10 +62,12 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:8000',
-#     'http://127.0.0.1:8000'
-# ]
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'onum_Backend.urls'
 

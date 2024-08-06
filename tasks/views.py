@@ -61,7 +61,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def check_complete(self, request, pk=None):
         task = self.get_object()
-        task.is_completed = True
+        task.is_completed = not task.is_completed
         task.save()
         return Response({'status': 'completed updated'})
 

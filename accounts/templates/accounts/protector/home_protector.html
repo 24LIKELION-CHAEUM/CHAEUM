@@ -16,7 +16,7 @@
         <main id="main-content">
             <section class="header-section">
                 <img class="logo-button" src="{% static 'img/logo.png' %}" alt="logo"/>
-                <p class="user-greeting">{{ user.username }}님은 시니어의 행복을 위해</p>
+                <p class="user-greeting">{{ user_profile.name }}님은 시니어의 행복을 위해</p>
                 <div class="day-counter">
                     <span class="day-count" id="day-count">{{ days_since_signup }}</span> 일 째 노력 중!
                 </div>

@@ -18,12 +18,12 @@ def home(request):
 def home_protector(request):
     user_profile = UserProfile.objects.get(user=request.user)
     days_since_signup = (datetime.now().date() - user_profile.created_at.date()).days
-    return render(request, 'accounts/protector/home_protector.html', {'days_since_signup': days_since_signup})
+    return render(request, 'accounts/protector/home_protector.html', {'days_since_signup': days_since_signup, 'user_profile': user_profile,})
 
 def home_senior(request):
     user_profile = UserProfile.objects.get(user=request.user)
     days_since_signup = (datetime.now().date() - user_profile.created_at.date()).days
-    return render(request, 'accounts/senior/home_senior.html', {'days_since_signup': days_since_signup})
+    return render(request, 'accounts/senior/home_senior.html', {'days_since_signup': days_since_signup , 'user_profile': user_profile,})
 
 def main(request):
     return render(request, 'accounts/main.html')

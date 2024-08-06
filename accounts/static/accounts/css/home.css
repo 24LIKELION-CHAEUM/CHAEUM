@@ -8,6 +8,7 @@ body {
     background-repeat: no-repeat; 
 }
 
+
 #wrap {
     margin-top: 0;
     width: 100%;
@@ -63,7 +64,20 @@ main {
     justify-content: center;
 }
 
+
+@keyframes floatUpDown {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
 .image-placeholder {
+    animation: floatUpDown 3s infinite ease-in-out;
     width: 221px;
     height: 220px;
     margin-top: 36px;

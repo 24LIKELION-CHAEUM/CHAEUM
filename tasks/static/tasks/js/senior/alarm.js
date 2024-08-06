@@ -1,4 +1,4 @@
-ocument.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() {
     const token = localStorage.getItem('access_token');
 
     async function fetchNotifications() {

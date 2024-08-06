@@ -78,6 +78,12 @@ class TaskViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(senior_tasks, many=True)
         return Response(serializer.data)
 
+    @action(detail=False, methods=['get'])
+    def med_count(self, request):
+        user = request.user
+        med_count = Task.objects.filter(type='MED', user=user).values('title').distinct().count
+        return Response({'med_count': med_count})
+
 
 @receiver(post_save, sender=Task)
 def create_notification(sender, instance, created, **kwargs):

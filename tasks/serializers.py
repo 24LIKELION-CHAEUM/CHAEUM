@@ -9,13 +9,6 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['user']
 
-    def get_med_count(self, instance):
-        user = self.context['request'].user
-        med_count = Task.objects.filter(type='MED', user=user).values('title').distinct().count()
-        if instance:
-            med_count -= 1  # 편집 중인 약을 제외
-        return med_count
-
     def get_mealtime(self, instance):
         if instance.type == 'MEAL':
             if instance.title == "아침":
@@ -38,8 +31,6 @@ class TaskSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        if instance.type == 'MED':
-            representation['med_count'] = self.get_med_count(instance)
         if instance.type == 'MEAL':
             mealtime = self.get_mealtime(instance)
             if mealtime:

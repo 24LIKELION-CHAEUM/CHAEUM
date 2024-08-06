@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     async function fetchTasks() {
         const url = `http://127.0.0.1:8000/tasks/senior_tasks/`;
         try {
-           
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -24,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-       // 할 일 목록 화면에 표시하기
-       function displayTasks(tasks) {
+    // 할 일 목록 화면에 표시하기
+    function displayTasks(tasks) {
         const tasksContainer = document.getElementById('task-list');
         const currentTime = new Date();
 
@@ -83,8 +82,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 초기 할 일 목록 표시
     fetchTasks();
-    
-    
 
     // 바텀 시트 및 오버레이 제어
     const overlay = document.getElementById('overlay');
@@ -92,6 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const closeButton = document.getElementById('close-sheet');
     const commentInput = document.getElementById('comment');
     const submitButton = document.querySelector('.sheet-submit');
+    const openButton = document.getElementById('open-sheet'); // Make sure this element exists
 
     openButton.addEventListener('click', () => {
         if (!openButton.disabled) {

@@ -22,7 +22,7 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     event.preventDefault();
     var formData = new FormData(this);
 
-    fetch('/accounts/login/', {
+    fetch('/login/', {
         method: 'POST',
         body: formData
     })

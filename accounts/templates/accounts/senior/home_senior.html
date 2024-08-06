@@ -39,7 +39,7 @@
                     </a>
                 </div>                
                 <div class="card">
-                    <a href="/html/senior/todo.html" class="nav-item">
+                    <a href="{% url 'senior_todolist' %}" class="nav-item">
                         <div class="card-content">
                         <div class="card-text">
                             <p class="card-description">할 일은 튼튼히!</p>
@@ -64,6 +64,7 @@
                             <span id="notification-count" class="notification-count">9999</span>
                         </div>
                     </div>
+                    
                     <img src="{% static 'img/arrow_next.svg' %}" class="arrow-icon" alt="" />
                 </div>
                 </a>

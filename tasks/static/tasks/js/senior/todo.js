@@ -215,8 +215,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 약물 등록하기
     async function createMedication(medication) {
-        const url = 'http://127.0.0.1:8000/medications/';
-        try {
+        const url = 'http://127.0.0.1:8000/tasks/';
+        try {ß
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {

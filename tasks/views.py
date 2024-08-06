@@ -10,8 +10,10 @@ from django.utils import timezone
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import render
 
-
+def senior_todolist(request):
+    return render(request, 'tasks/senior/todo.html')
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log(token)
     // API를 통해 할 일 목록을 받아오는 함수
     async function fetchTasks() {
-        const url = `http://127.0.0.1:8000/tasks/senior_tasks/`;
+        const url = `http://43.201.81.113/tasks/senior_tasks/`;
         try {
             const response = await fetch(url, {
                 method: 'GET',

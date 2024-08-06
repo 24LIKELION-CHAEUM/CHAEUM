@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const token = localStorage.getItem('access_token');
 
     async function fetchNotifications() {
-        const url = 'http://127.0.0.1:8000/notifications/';
+        const url = 'http://43.201.81.113/notifications/';
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //알림읽음
     async function markAsRead(notificationID) {
-        const url = `http://127.0.0.1:8000/notifications/${notificationID}/check_read/`;
+        const url = `http://43.201.81.113/notifications/${notificationID}/check_read/`;
         try {
             const response = await fetch(url, {
                 method: 'PATCH',

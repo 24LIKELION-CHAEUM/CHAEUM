@@ -136,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // API에서 할 일 목록 가져오기
     async function fetchTasks(date) {
-        const url = `http://127.0.0.1:8000/tasks?date=${date}`;
+        const url = `http://43.201.81.113/tasks?date=${date}`;
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 새로운 할 일 생성하기
     async function createTask(task) {
-        const url = 'http://127.0.0.1:8000/tasks/';
+        const url = 'http://43.201.81.113/tasks/';
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
      // 새로운 약물 생성하기
      async function createMedication(medication) {
-        const url = 'http://127.0.0.1:8000/tasks/';
+        const url = 'http://43.201.81.113/tasks/';
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
      //새로운 식사 생성하기
      async function createMeal(meal) {
-        const url = 'http://127.0.0.1:8000/tasks/';
+        const url = 'http://43.201.81.113/tasks/';
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -301,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 식사 시간을 백엔드에서 가져오기
     async function fetchMealTimes() {
-        const url = 'http://127.0.0.1:8000/tasks/';
+        const url = 'http://43.201.81.113/tasks/';
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 할 일 완료 상태 업데이트
     async function updateTaskStatus(taskId, completed) {
-        const url = `http://127.0.0.1:8000/tasks/${taskId}/check_complete/`;
+        const url = `http://43.201.81.113/tasks/${taskId}/check_complete/`;
         try {
             const response = await fetch(url, {
                 method: 'PATCH',

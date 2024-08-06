@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     //  읽지 않은 알림 개수 가져오기
     async function fetchUnreadCount() {
-        const url = 'http://127.0.0.1:8000/notifications/unread_count/';
+        const url = 'http://43.201.81.113/notifications/unread_count/';
         try {
             const response = await fetch(url, {
                 method: 'GET',

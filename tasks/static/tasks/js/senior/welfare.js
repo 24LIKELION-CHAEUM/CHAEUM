@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }; 
     var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
 
-    var username = '홍길동';
+    
     var userPosition = null;
     var marker = new kakao.maps.Marker(); // 클릭한 위치를 표시할 마커입니다
     var infowindow = new kakao.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
@@ -61,9 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 var district = arr[1];
                 var subDistrict = arr[2];
                 var userLocationElement = document.getElementById('user-location');
+                
                 userLocationElement.innerHTML = `
                     <div class="location-container">
-                        <img src="{%static '/img/위치.svg' %}" alt="location icon" class="location-icon">
+                        <img src="/static/img/위치.svg" alt="location icon" class="location-icon">
                         <span class="location-text">내 위치</span>
                         <span class="locationtt"> ${city} ${district} ${subDistrict}</span>
                     </div>
@@ -95,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     };
                 });
                 console.log('검색 결과:', filteredFacilities); // 검색 결과를 콘솔에 출력
-                var title = isSearch ? '검색 결과' : `${username} 님과 가까운 주변 복지시설`;
+                var title = isSearch ? '검색 결과' : `가까운 주변 복지시설`;
                 displayBottomSheet(filteredFacilities, title);
                 displayMarkers(filteredFacilities);
             } else {
@@ -141,13 +142,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.innerHTML = `
                     <div class="facility-info">
                         ${index === 0 ? `<h2>${title}</h2>` : ''}
-                        <img src=" "{% static 'img/facility.svg' %}" alt="Facility Image">
+                        <img src="/static/img/facility.svg" alt="Facility Image">
                         <div class="facility-name">${truncatedTitle}</div>
                         <div class="facility-sub">${truncatedSub}</div>
                         <div class="facility-distance">${distance}km | 도보 ${walkingTime}분</div>
                         <div class="facility-address">${truncatedAddress}</div>
                         <button class="call-button" onclick="showCallPopup('${facility.title}', '${facility.phone}')">
-                            <img src =  "{% static 'img/call.svg' %}" alt="call">
+                            <img src =  '/static/img/call.svg' alt="call">
                         </button>
                     </div>
                 `;

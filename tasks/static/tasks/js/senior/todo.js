@@ -4,15 +4,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
     const today = new Date();
     const koreaTime = new Date(today.setHours(today.getHours() + 9));
-    const currentDay = today.getDay();
-    const currentDate = today.getDate();
-    const fullDate = today.toLocaleDateString('ko-KR', {
+    let selectedDate = koreaTime.toISOString().split('T')[0];
+    const currentDay = koreaTime.getDay();
+    const currentDate = koreaTime.getDate();
+    const fullDate = koreaTime.toLocaleDateString('ko-KR', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
     });
 
-    const dayOfWeek = daysOfWeek[(currentDay + 6) % 7];
+    const dayOfWeek = daysOfWeek[currentDay === 0 ? 6 : currentDay - 1];
     const tasks = document.querySelectorAll('.task');
     const options = document.querySelectorAll('.option');
     const submitButton = document.getElementById('submit-button');
@@ -51,16 +52,21 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 현재 날짜 정보와 주간 날짜 생성
     function calculateWeekDates() {
-        const startDate = new Date(today);
+        const startDate = new Date(koreaTime);
         startDate.setDate(currentDate - (currentDay === 0 ? 6 : currentDay - 1));
 
         const weekDates = [];
         for (let i = 0; i < 7; i++) {
             const date = new Date(startDate);
             date.setDate(startDate.getDate() + i);
+            const days = daysOfWeek[(startDate.getDay() + i - 1) % 7];
+            const dates = (date.getDate());
+            const fullDates = date.toLocaleDateString('en-CA');
+            console.log(`Day: ${days}, Date: ${dates}, FullDate: ${fullDates}`);
             weekDates.push({
-                day: daysOfWeek[i],
-                date: date.getDate()
+                day: daysOfWeek[(startDate.getDay() + i - 1) % 7],
+                date: date.getDate(),
+                fullDate: date.toLocaleDateString('en-CA') // fullDate 추가
             });
         }
         return weekDates;
@@ -70,15 +76,52 @@ document.addEventListener("DOMContentLoaded", function() {
     function displayWeekCalendar() {
         const weekDates = calculateWeekDates();
         if (weekCalendar) {
-            weekCalendar.innerHTML = weekDates.map(({ day, date }, index) => `
-                <div class="day ${index === (currentDay === 0 ? 6 : currentDay - 1) ? 'active' : ''}">
-                    <span class="day-name">${day}</span>
-                    <span class="day-date">${date}</span>
-                </div>
-            `).join('');
+            weekCalendar.innerHTML = weekDates.map(({ day, date, fullDate }, index) => `
+            <div class="day ${index === (currentDay === 0 ? 6 : currentDay - 1) ? 'active' : ''}" data-full-date="${fullDate}">
+                <span class="day-name">${day}</span>
+                <span class="day-date">${date}</span>
+            </div>
+        `).join('');
+
+            // 날짜 클릭 이벤트 리스너 추가
+            const days = document.querySelectorAll('.day');
+            days.forEach(day => {
+                day.addEventListener('click', (event) => {
+                    const selectedDate = event.currentTarget.dataset.fullDate;
+                    days.forEach(d => d.classList.remove('active'));
+                    event.currentTarget.classList.add('active');
+                    console.log("클릭이벤트 후",selectedDate);
+                    updateDateInfo(selectedDate);
+                    fetchTasks(selectedDate);
+                });
+            });
         } else {
             console.error('weekCalendar element not found');
         }
+    }
+
+    // 선택된 날짜 정보 업데이트
+    function updateDateInfo(selectedDate) {
+        const selectedDateObj = new Date(selectedDate);
+        const fullDate = selectedDateObj.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        });
+        const dayOfWeek = daysOfWeek[(selectedDateObj.getDay() - 1 + 7) % 7];
+        const fullDateElement = document.getElementById('full-date');
+        const dayOfWeekElement = document.getElementById('day-of-week');
+        if (fullDateElement) fullDateElement.textContent = fullDate;
+        if (dayOfWeekElement) dayOfWeekElement.textContent = `${dayOfWeek}요일`;
+    }
+
+
+    function formatTime(time) {
+        const [hours, minutes] = time.split(':');
+        const intHours = parseInt(hours, 10);
+        const period = intHours < 12 ? '오전' : '오후';
+        const formattedHours = intHours % 12 || 12; // 0시는 12시로 표시
+        return `${period} ${formattedHours.toString().padStart(2, '0')}:${minutes}`;
     }
 
     // API에서 할 일 목록 가져오기
@@ -126,11 +169,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 <div class="task" data-id="${task.id}">
                     <div class="task-icon"><img src="${imageSrc}" alt=""></div>
                     <div class="task-info">
-                        <div class="task-title">${task.title}</div>
-                        <div class="task-time">${task.time}</div>
+                        <div class="task-title" style="text-decoration: ${task.is_completed ? 'line-through' : 'none'}; color: ${task.is_completed ? '#7B7B7E' : 'inherit'};">${task.title}</div>
+                        <div class="task-time">${formatTime(task.time)}</div>
                     </div>
                     <div class="task-status">
-                        <img src="${task.completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
+                        <img src="${task.is_completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
                     </div>
                 </div>
             `;
@@ -155,7 +198,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Task created:', data);
-            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            // console.log(task.date)
+            fetchTasks(task.date);
+            // fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
         } catch (error) {
             console.error('Error creating task:', error);
         }
@@ -174,16 +219,49 @@ document.addEventListener("DOMContentLoaded", function() {
                 body: JSON.stringify(medication)
             });
             if (!response.ok) {
+                const errorData = await response.json();
+                if (errorData.error) {
+                    showModalWithError(errorData.error);
+                }
                 throw new Error(`HTTP error! status: ${response.status}`);
+
             }
             const data = await response.json();
             console.log('Medication created:', data);
-            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            fetchTasks(medication.date);
+            // fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
             medicationCount++;
             updateMedicationCount();
         } catch (error) {
             console.error('Error creating medication:', error);
         }
+    }
+
+    //약 3개 초과 시 체크
+    function showModalWithError(errorMessage) {
+        const mediationStatus = document.getElementById('mediation-status');
+        const recordInfo = document.querySelector('.record-info');
+
+        mediationStatus.textContent = "3개";
+        mediationStatus.style.color = 'red';
+        recordInfo.style.color = 'red';
+    }
+
+    // 체크 버튼 이벤트 리스너 추가
+    function addCheckButtonListeners() {
+        const checkButtons = document.querySelectorAll('.check-button');
+        checkButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const taskId = event.target.closest('.task').dataset.id;
+                const currentStatus = event.target.closest('.task').dataset.completed === 'true';
+                toggleTaskStatus(taskId, currentStatus);
+            });
+        });
+    }
+
+    function toggleTaskStatus(taskId, currentStatus) {
+        const newStatus = !currentStatus;
+        updateTaskStatus(taskId, newStatus);
     }
 
     // 할 일 완료 상태 업데이트
@@ -203,55 +281,27 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Task status updated:', data);
+            fetchTasks(selectedDate);
             addCheckButtonListeners();
         } catch (error) {
             console.error('Error updating task status:', error);
         }
     }
 
-
-    tasks.forEach(task => {
-        const checkButton = task.querySelector('.task-status img');
-        checkButton.addEventListener('click', () => {
-            task.classList.toggle('completed');
-        });
-    });
-
-    // 체크 버튼 이벤트 리스너 추가
-    function addCheckButtonListeners() {
-        const checkButtons = document.querySelectorAll('.check-button');
-        checkButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const taskElement = this.closest('.task');
-                if (taskElement) {
-                    const taskId = taskElement.dataset.id;
-                    const completed = !taskElement.classList.contains('completed');
-                    updateTaskStatus(taskId, completed);
-                    taskElement.classList.toggle('completed');
-                    const taskTitle = taskElement.querySelector('.task-title');
-                    this.src = completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg;
-                    taskTitle.style.textDecoration = completed ? 'line-through' : 'none';
-                } else {
-                    console.error('taskElement not found');
-                }
-            });
-        });
-    }
-
-
     // 폼 제출 이벤트 리스너
     if (taskForm) {
         taskForm.addEventListener('submit', function(event) {
             event.preventDefault();
-
+            console.log("selectedDate=", selectedDate);
             const newTask = {
                 title: taskTitleInput.value.trim(),
                 time: taskTimeInput.value,
                 completed: false,
                 type: taskTypeSelect.value,
+                date: selectedDate,
                 repeat_days: Array.from(repeatDaysInputs).filter(input => input.checked).map(input => parseInt(input.value))
             };
-
+            console.log(newTask.date);
             createTask(newTask);
 
             // 입력 필드 초기화
@@ -448,6 +498,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     time: `${hourInput.value.trim()}:${minuteInput.value.trim()}`,
                     completed: false,
                     type: 'MED',
+                    date: selectedDate,
                     repeat_days: Array.from(medicationDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => daysOfWeek.indexOf(dayButton.textContent))
                 };
 
@@ -472,6 +523,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     time: `${hourInput2.value.trim()}:${minuteInput2.value.trim()}`,
                     completed: false,
                     type: 'TASK',
+                    date: selectedDate,
                     repeat_days: Array.from(taskDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => daysOfWeek.indexOf(dayButton.textContent))
                 };
 
@@ -492,6 +544,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fullDateElement) fullDateElement.textContent = fullDate;
     if (dayOfWeekElement) dayOfWeekElement.textContent = `${dayOfWeek}요일`;
 
-    fetchTasks(koreaTime.toISOString().split('T')[0]);
+    const initialDate = koreaTime.toISOString().split('T')[0];
+    updateDateInfo(selectedDate);
+    fetchTasks(selectedDate);
     updateMedicationCount();
 });

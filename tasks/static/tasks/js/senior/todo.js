@@ -33,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const medicationDays = document.querySelectorAll('.repeat-btn');
     const recordedEmotionStatus = document.getElementById('mediation-status');
     const medicationStatus = document.getElementById('medication-status');
+    
 
     // modal2
     const hourInput2 = document.getElementById('hour2');
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let selectedOption = null; // 현재 선택된 옵션 저장 변수
     let medicationCount = 0; // 등록된 약물 개수 저장 변수
+    let mealTimes = []; // 식사 시간 저장 배열
 
     // 현재 날짜 정보와 주간 날짜 생성
     function calculateWeekDates() {
@@ -70,10 +72,7 @@ document.addEventListener("DOMContentLoaded", function() {
         for (let i = 0; i < 7; i++) {
             const date = new Date(startDate);
             date.setDate(startDate.getDate() + i);
-            const days = daysOfWeek[(startDate.getDay() + i - 1) % 7];
-            const dates = (date.getDate());
-            const fullDates = date.toLocaleDateString('en-CA');
-            console.log(`Day: ${days}, Date: ${dates}, FullDate: ${fullDates}`);
+            
             weekDates.push({
                 day: daysOfWeek[(startDate.getDay() + i - 1) % 7],
                 date: date.getDate(),
@@ -217,8 +216,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // 새로운 약물 생성하기
-    async function createMedication(medication) {
+     // 새로운 약물 생성하기
+     async function createMedication(medication) {
         const url = 'http://127.0.0.1:8000/tasks/';
         try {
             const response = await fetch(url, {
@@ -302,7 +301,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 식사 시간을 백엔드에서 가져오기
     async function fetchMealTimes() {
-        const url = 'http://127.0.0.1:8000/tasks/meals';
+        const url = 'http://127.0.0.1:8000/tasks/';
         try {
             const response = await fetch(url, {
                 method: 'GET',
@@ -315,7 +314,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Meals fetched:', data);
-            mealTimes = data.map(meal => meal.title);
+            mealTimes = data.filter(task => task.type === 'MEAL').map(meal => meal.title);
             updateMealStatus();
         } catch (error) {
             console.error('Error fetching meals:', error);
@@ -324,10 +323,37 @@ document.addEventListener("DOMContentLoaded", function() {
     // 식사 시간을 화면에 표시하기
     function updateMealStatus() {
         if (mealStatus) {
-            mealStatus.textContent = mealTimes.join(' ');
+            mealStatus.textContent = mealTimes.length > 0 ? mealTimes.join(', ') : ' ';
+        }
+    }
+    /* medication 상태를 백엔드에서 가져오기
+    async function fetchMedicationStatus() {
+        const url = 'http://127.0.0.1:8000/tasks/med_count/';
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Medication status fetched:', data);
+            const selectedDaysCount = data.med_count === 0 ? 1 : data.med_count === 1 ? 2 : data.med_count === 2 ? 3 : 0;
+            updateMedicationStatus(selectedDaysCount);
+        } catch (error) {
+            console.error('Error fetching medication status:', error);
         }
     }
 
+    // medication 상태를 화면에 표시하기
+    function updateMedicationStatus(count) {
+        if (recordedEmotionStatus) {
+            recordedEmotionStatus.textContent = `${count}회`;
+        }
+    }*/
 
     // 할 일 완료 상태 업데이트
     async function updateTaskStatus(taskId, completed) {
@@ -353,28 +379,6 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('Error updating task status:', error);
         }
     }
-
-    
-//     // 체크 버튼 이벤트 리스너 추가
-//     function addCheckButtonListeners() {
-//         const checkButtons = document.querySelectorAll('.check-button');
-//         checkButtons.forEach(button => {
-//             button.addEventListener('click', function() {
-//                 const taskElement = this.closest('.task');
-//                 if (taskElement) {
-//                     const taskId = taskElement.dataset.id;
-//                     const completed = !taskElement.classList.contains('completed');
-//                     updateTaskStatus(taskId, completed);
-//                     taskElement.classList.toggle('completed');
-//                     const taskTitle = taskElement.querySelector('.task-title');
-//                     this.src = completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg;
-//                     taskTitle.style.textDecoration = completed ? 'line-through' : 'none';
-//                 } else {
-//                     console.error('taskElement not found');
-//                 }
-//             });
-//         });
-//     }
 
 
     // 폼 제출 이벤트 리스너
@@ -441,7 +445,7 @@ document.addEventListener("DOMContentLoaded", function() {
             errorMessage.classList.add('hidden');
         }
 
-        if (medicationName && hour && minute && selectedDays.length > 0 && isTimeValid && medicationCount < 3) {
+        if (medicationName && hour && minute && selectedDays.length > 0 && isTimeValid && medicationCount < 4) {
             submitButton3.classList.add('enabled');
             submitButton3.classList.remove('disabled');
             submitButton3.disabled = false;
@@ -533,7 +537,6 @@ document.addEventListener("DOMContentLoaded", function() {
             validateMedicationForm();
         }
     }
-
  
     function openModal(modal) {
         const modals = [modal1, modal2, modal3, modal4];
@@ -671,6 +674,7 @@ document.addEventListener("DOMContentLoaded", function() {
     if (submitButton4) {
         submitButton4.addEventListener('click', () => {
             if (!submitButton4.disabled) {
+                const selectedMeal = mealSelect.value;
                 const meal = {
                     title: selectedMeal,
                     time: `${hourInput3.value.trim()}:${minuteInput3.value.trim()}`,
@@ -701,6 +705,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const initialDate = koreaTime.toISOString().split('T')[0];
     updateDateInfo(selectedDate);
     fetchTasks(selectedDate);
+    fetchMealTimes(); // 페이지 로드 시 식사 시간 가져오기
     updateMedicationCount();
 });
 

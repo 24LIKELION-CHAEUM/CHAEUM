@@ -300,6 +300,7 @@ main {
     line-height: 18px;
     letter-spacing: -2%;
     color: #7B7B7E;
+    font-weight: bold;
 }
 
 .next1,.next2 img {
@@ -321,12 +322,12 @@ main {
     transition: 0.3s ease-in-out;
 }
 
-.submit-button:disabled,.submit-button3:disabled,.submit-button2:disabled {
+.submit-button:disabled,.submit-button3:disabled,.submit-button2:disabled, .submit-button4:disabled {
     background-color: #7B7B7E;
     cursor: not-allowed;
 }
 
-.submit-button3,.submit-button2 {
+.submit-button3,.submit-button2, .submit-button4 {
     background-color: #8F6CFF;
     color: white;
     border: none;
@@ -369,7 +370,7 @@ main {
     cursor: pointer;
 }
 
-.mediation {
+.mediation, .meal {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -379,7 +380,8 @@ main {
     border-radius: 12px;
 }
 
-.mediation-title,.mediation-status {
+.mediation-title,.mediation-status, 
+.meal-title, .meal-status {
     font-family: 'body3';
     font-size: 14px;
     line-height: 18px;
@@ -387,14 +389,29 @@ main {
     margin-top: 4px;
 }
 
-.mediation-title{
+.mediation-title,
+.meal-title{
     color: #242427;
 }
 
-.mediation-status{
+.mediation-status,
+.meal-status{
     color: #6838FF;
 }
-
+#meal-select{
+    width: 100%;
+    font-family: 'body3';
+    font-size: 14px;
+    height: 40px;
+    text-align: center;
+    border: 1px solid #B2B2B4;
+    border-radius: 8px;
+}
+select {
+    appearance: none; /* html의 기본적인 디자인 없애기 */
+    -webkit-appearance: none;  /* Vendor Prefix */
+    -moz-appearance: none; /* Vendor Prefix */
+}
 .record-info {
     display: block;
     font-family: 'label';
@@ -453,7 +470,7 @@ main {
     border: none;
 }
 
-.time-inputs ,.time-inputs2 {
+.time-inputs ,.time-inputs2,.time-inputs3 {
     display: flex;
     justify-content: left;
     gap: 10px;
@@ -461,13 +478,15 @@ main {
 }
 
 .time-inputs .time-input ,
-.time-inputs2 .time-input2 {
+.time-inputs2 .time-input2, 
+.time-inputs3 .time-input3{
     width: 60px;
     height: 48px;
 }
 
 .time-inputs input ,
-.time-inputs2 input {
+.time-inputs2 input ,
+.time-inputs3 input{
     text-align: center;
 }
 
@@ -504,7 +523,8 @@ main {
 }
 
 #error-message ,
-#error-message2 {
+#error-message2,
+#error-message3 {
     color: #EA1C00;
     font-family: 'label' ;
     font-size: 12px;
@@ -516,6 +536,9 @@ main {
 .error-message.hidden {
     display: none;
 }
+
+
+/*modal4*/
 
 @media screen and(max-width: 430px){
 	body{

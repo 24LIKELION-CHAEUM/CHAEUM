@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     const dayOfWeek = daysOfWeek[(currentDay + 6) % 7];
+    const tasks = document.querySelectorAll('.task');
     const options = document.querySelectorAll('.option');
     const submitButton = document.getElementById('submit-button');
 
@@ -41,13 +42,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const taskDays = document.querySelectorAll('.repeat-btn2');
 
     //modal4
-    
+    const mealSelect = document.getElementById('meal-select');
+    const mealStatus = document.getElementById('meal-status');
     const hourInput3 = document.getElementById('hour3');
     const minuteInput3 = document.getElementById('minute3');
     const errorMessage3 = document.getElementById('error-message3');
-    const submitButton4 = document.getElementById('submit-button3');
+    const submitButton4 = document.getElementById('submit-button4');
     const taskNameInput3 = document.getElementById('reason3');
- 
+
 
     const taskForm = document.getElementById('task-form');
     const taskTitleInput = document.getElementById('task-title');
@@ -132,14 +134,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     break;
             }
             return `
-                <div class="task ${task.is_complete ? 'completed' : ''}" data-id="${task.id}">
+                <div class="task" data-id="${task.id}">
                     <div class="task-icon"><img src="${imageSrc}" alt=""></div>
                     <div class="task-info">
-                        <div class="task-title" style="text-decoration: ${task.is_complete ? 'line-through' : 'none'}">${task.title}</div>
+                        <div class="task-title">${task.title}</div>
                         <div class="task-time">${task.time}</div>
                     </div>
                     <div class="task-status">
-                        <img src="${task.is_complete ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
+                        <img src="${task.completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
                     </div>
                 </div>
             `;
@@ -190,12 +192,62 @@ document.addEventListener("DOMContentLoaded", function() {
             fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
             medicationCount++;
             updateMedicationCount();
-            fetchUnreadCount(); // 읽지 않은 알림 개수 업데이트
         } catch (error) {
             console.error('Error creating medication:', error);
         }
     }
 
+     //새로운 식사 생성하기
+     async function createMeal(meal) {
+        const url = 'http://127.0.0.1:8000/tasks/';
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(meal)
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Meal created:', data);
+            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+        } catch (error) {
+            console.error('Error creating medication:', error);
+        }
+    }
+
+    // 식사 시간을 백엔드에서 가져오기
+    async function fetchMealTimes() {
+        const url = 'http://127.0.0.1:8000/tasks/meals';
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Meals fetched:', data);
+            mealTimes = data.map(meal => meal.title);
+            updateMealStatus();
+        } catch (error) {
+            console.error('Error fetching meals:', error);
+        }
+    }
+    // 식사 시간을 화면에 표시하기
+    function updateMealStatus() {
+        if (mealStatus) {
+            mealStatus.textContent = mealTimes.join(' ');
+        }
+    }
+//
     async function updateTaskStatus(taskId, completed) {
         const url = `http://127.0.0.1:8000/tasks/${taskId}/check_complete/`;
         try {
@@ -217,7 +269,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('Error updating task status:', error);
         }
     }
-
+    
     // 체크 버튼 이벤트 리스너 추가
     function addCheckButtonListeners() {
         const checkButtons = document.querySelectorAll('.check-button');
@@ -342,6 +394,37 @@ document.addEventListener("DOMContentLoaded", function() {
             submitButton2.disabled = true;
         }
     }
+    function validateMealForm() {
+        if (!mealSelect || !hourInput3 || !minuteInput3) return;
+
+        const selectedMeal = mealSelect.value;
+        const hour = hourInput3.value.trim();
+        const minute = minuteInput3.value.trim();
+        const isTimeValid = validateTime(hour, minute);
+
+        if (hour || minute) {
+            if (!isTimeValid) {
+                errorMessage3.classList.remove('hidden');
+            } else if (!selectedMeal) {
+                errorMessage3.classList.remove('hidden');
+            }
+            else {
+                errorMessage3.classList.add('hidden');
+            }
+        } else {
+            errorMessage3.classList.add('hidden');
+        }
+
+        if (selectedMeal && hour && minute && isTimeValid) {
+            submitButton4.classList.add('enabled');
+            submitButton4.classList.remove('disabled');
+            submitButton4.disabled = false;
+        } else {
+            submitButton4.classList.remove('enabled');
+            submitButton4.classList.add('disabled');
+            submitButton4.disabled = true;
+        }
+    }
 
     function updateRecordedEmotionStatus() {
         const selectedDaysCount = Array.from(medicationDays).filter(dayButton => dayButton.classList.contains('selected')).length;
@@ -364,6 +447,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+ 
     function openModal(modal) {
         const modals = [modal1, modal2, modal3, modal4];
         modals.forEach(m => m.classList.remove('show'));
@@ -395,6 +479,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 openModal(modal4);
             }
 
+            
             modal1.classList.remove('show');
         }
     }
@@ -430,6 +515,12 @@ document.addEventListener("DOMContentLoaded", function() {
     if (taskNameInput2 && hourInput2 && minuteInput2) {
         [taskNameInput2, hourInput2, minuteInput2].forEach(input => {
             input.addEventListener('input', validateTaskForm);
+        });
+    }
+
+    if (mealSelect && hourInput3 && minuteInput3) {
+        [mealSelect, hourInput3, minuteInput3].forEach(input => {
+            input.addEventListener('input', validateMealForm);
         });
     }
 
@@ -491,22 +582,25 @@ document.addEventListener("DOMContentLoaded", function() {
     if (submitButton4) {
         submitButton4.addEventListener('click', () => {
             if (!submitButton4.disabled) {
-                const newTask = {
-                    title: taskNameInput3.value.trim(),
-                    time: `${hourInput3.value.trim()}:${minuteInput2.value.trim()}`,
+                const meal = {
+                    title: selectedMeal,
+                    time: `${hourInput3.value.trim()}:${minuteInput3.value.trim()}`,
                     completed: false,
                     type: 'MEAL',
                 };
 
-                createTask(newTask);
+                createMeal(meal);
 
                 taskNameInput3.value = '';
                 hourInput3.value = '';
                 minuteInput3.value = '';
+                validateMealForm();
                 
             }
         });
     }
+
+       
 
     displayWeekCalendar();
     const fullDateElement = document.getElementById('full-date');
@@ -514,6 +608,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fullDateElement) fullDateElement.textContent = fullDate;
     if (dayOfWeekElement) dayOfWeekElement.textContent = `${dayOfWeek}요일`;
 
-    fetchTasks(koreaTime.toISOString().split('T')[0]);
+    fetchTasks(today.toISOString().split('T')[0]);
     updateMedicationCount();
 });
+
+   

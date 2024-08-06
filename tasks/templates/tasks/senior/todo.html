@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'tasks/css/todo.css' %} ">
-    <style>
-        @import url("{% static 'css/fonts.css' %}");
-    </style>
+    <link rel="stylesheet" href="{% static 'tasks/css/todo.css' %}">
 </head>
 <body>
     <div id="wrap">
@@ -30,22 +28,10 @@
                     </div>
                 </div>
             </div>
-            <div class="tasks" id="tasks">
-                <div class="task">
-                    <div class="task-icon"><img src="{%static 'img/default_profile.png' %}" alt=""></div>
-                    <div class="task-info">
-                        <div class="task-title"></div>
-                        <div class="task-time"></div>
-                    </div>
-                    <div class="task-status">
-                        <img src="{% static 'img/check_unactivated.svg' %}" alt="체크">
-                    </div>
-                    
-                </div>
-            </div>
+            <div class="tasks" id="tasks"></div>
         </main>
 
-        <!-- modal -->
+        <!-- modal 1 -->
         <div class="modal-backdrop"></div>
         <div id="modal1" class="modal1">
             <div class="modal-content">
@@ -53,84 +39,45 @@
                     <span class="close" onclick="closeModal()">취소</span>
                     <div class="modal-title">추가할 일 선택하기</div>
                 </div>
-                <div class="option">
-                    <div class="option-icon">💊</div>
-                    <div class="option-info">
-                        <div class="option-title">투약할 약 추가하기</div>
-                        <div class="option-time">
-                            <span class="highlight">최대 3개</span><span class="normal">까지 등록할 수 있어요</span>
+                <div class="modal-body">
+                    <div class="option" id="option-medication">
+                        <div class="option-icon">💊</div>
+                        <div class="option-info">
+                            <div class="option-title">투약할 약 추가하기</div>
+                            <div class="option-time">
+                                <span class="highlight">최대 3개</span><span class="normal">까지 등록할 수 있어요</span>
+                            </div>
+                        </div>
+                        <div class="next1" id="next1">
+                            <img src="{%static 'img/arrow_next.svg' %}" alt="next">
                         </div>
                     </div>
-                    <div class="next1" id="next1">
-                        <img src="{%static 'img/arrow_next.svg' %}" alt="next">
-                    </div>
-                </div>
-                <div class="option">
-                    <div class="option-icon">✅</div>
-                    <div class="option-info">
-                        <div class="option-title">다른 할 일 추가하기</div>
-                        <div class="option-time">
-                            <span class="normal">전화, 산책 등과 같이 </span><span class="highlight">다양한 할 일</span><span class="normal">을 등록할 수 있어요</span>
+                    <div class="option" id="option-task">
+                        <div class="option-icon">✅</div>
+                        <div class="option-info">
+                            <div class="option-title">다른 할 일 추가하기</div>
+                            <div class="option-time">
+                                <span class="normal">전화, 산책 등과 같이 </span><span class="highlight">다양한 할 일</span><span class="normal">을 등록할 수 있어요</span>
+                            </div>
+                        </div>
+                        <div class="next2" id="next2">
+                            <img src="{%static 'img/arrow_next.svg' %}" alt="next">
                         </div>
                     </div>
-                    <div class="next2" id="next2">
-                        <img src="{% static 'img/arrow_next.svg' %}" alt="next">
-                    </div>
-                <div class="option">
-                    <div class="option-icon">🍚</div>
-                    <div class="option-info">
-                        <div class="option-title">식사 시간 등록하기</div>
-                        <div class="option-time">
-                            <span class="highlight">아침, 점심, 저녁</span><span class="normal">을 모두 등록해주세요</span>
+                    <div class="option" id="option-meal">
+                        <div class="option-icon">🍚</div>
+                        <div class="option-info">
+                            <div class="option-title">식사 시간 등록하기</div>
+                            <div class="option-time">
+                                <span class="highlight">아침, 점심, 저녁</span><span class="normal">을 모두 등록해주세요</span>
+                            </div>
+                        </div>
+                        <div class="next" id="next">
+                            <img src="{%static 'img/arrow_next.svg' %}" alt="next">
                         </div>
                     </div>
-                    <div class="next3" id="next3">
-                        <img src="{% static 'img/arrow_next.svg' %}" alt="next">
-                    </div>
+                    <button id="submit-button" class="submit-button" disabled>다음</button>
                 </div>
-                <button id="submit-button" class="submit-button" disabled>다음</button>
-            </div>
-        </div>       
-        
-        <!-- modal 3 -->
-        <div id="modal3" class="modal3">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close" onclick="closeModal()">취소</span>
-                    <div class="modal-title">약 추가하기</div>
-                </div>
-                <div class="mediation">
-                    <div class="mediation-title">💊 등록된 약</div>
-                    <div class="mediation-status" id="mediation-status">없음</div>
-                </div>
-                <div class="record-info">최대 3개까지 약을 등록할 수 있어요</div>
-                <div class="form-group">
-                    <label for="reason">투약하는 약의 이름</label>
-                    <input type="text" id="reason" placeholder="투약하는 약의 이름을 입력해주세요">
-                </div>
-                <div class="form-group">
-                    <label for="hour" class="hour">투약 시간</label>
-                    <div class="time-inputs">
-                        <input type="text" id="hour" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
-                        <div>시</div>
-                        <input type="text" id="minute" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
-                        <div>분</div>
-                    </div>
-                    <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
-                </div>
-                <div class="form-group">
-                    <label for="repeat" class="repeat-title">투약반복</label>
-                    <div class="repeat">
-                        <div class="repeat-btn">월</div>
-                        <div class="repeat-btn">화</div>
-                        <div class="repeat-btn">수</div>
-                        <div class="repeat-btn">목</div>
-                        <div class="repeat-btn">금</div>
-                        <div class="repeat-btn">토</div>
-                        <div class="repeat-btn">일</div>
-                    </div>
-                </div>
-                <button id="submit-button3" class="submit-button3" disabled>추가</button>
             </div>
         </div>
 
@@ -141,60 +88,125 @@
                     <span class="close" onclick="closeModal()">취소</span>
                     <div class="modal-title">다른 할 일 등록하기</div>
                 </div>
-                <div class="form-group">
-                    <label for="reason">할 일의 이름</label>
-                    <input type="text" id="reason2" placeholder="할 일을 입력해주세요">
-                </div>
-                <div class="form-group">
-                    <label for="hour" class="hour">시간</label>
-                    <div class="time-inputs2">
-                        <input type="text" id="hour2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
-                        <div>시</div>
-                        <input type="text" id="minute2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
-                        <div>분</div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="reason2">할 일의 이름</label>
+                        <input type="text" id="reason2" placeholder="할 일을 입력해주세요">
                     </div>
-                    <div id="error-message2" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
-                </div>
-                <div class="form-group">
-                    <label for="repeat" class="repeat-title">할 일 반복</label>
-                    <div class="repeat">
-                        <div class="repeat-btn2">월</div>
-                        <div class="repeat-btn2">화</div>
-                        <div class="repeat-btn2">수</div>
-                        <div class="repeat-btn2">목</div>
-                        <div class="repeat-btn2">금</div>
-                        <div class="repeat-btn2">토</div>
-                        <div class="repeat-btn2">일</div>
+                    <div class="form-group">
+                        <label for="hour2" class="hour">시간</label>
+                        <div class="time-inputs2">
+                            <input type="text" id="hour2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
+                            <div>시</div>
+                            <input type="text" id="minute2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
+                            <div>분</div>
+                        </div>
+                        <div id="error-message2" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeat" class="repeat-title">할 일 반복</label>
+                        <div class="repeat">
+                            <div class="repeat-btn2">월</div>
+                            <div class="repeat-btn2">화</div>
+                            <div class="repeat-btn2">수</div>
+                            <div class="repeat-btn2">목</div>
+                            <div class="repeat-btn2">금</div>
+                            <div class="repeat-btn2">토</div>
+                            <div class="repeat-btn2">일</div>
+                        </div>
                     </div>
                 </div>
-                <button id="submit-button2" class="submit-button2" disabled>추가</button>
+                <div class="modal-footer">
+                    <button id="submit-button2" class="submit-button2" disabled>추가</button>
+                </div>
             </div>
         </div>
 
+        <!-- modal 3 -->
+        <div id="modal3" class="modal3">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" onclick="closeModal()">취소</span>
+                    <div class="modal-title">약 추가하기</div>
+                </div>
+                <div class="modal-body">
+                    <div class="mediation">
+                        <div class="mediation-title">💊 등록된 약</div>
+                        <div class="mediation-status" id="mediation-status">없음</div>
+                    </div>
+                    <div class="record-info">최대 3개까지 약을 등록할 수 있어요</div>
+                    <div class="form-group">
+                        <label for="reason">투약하는 약의 이름</label>
+                        <input type="text" id="reason" placeholder="투약하는 약의 이름을 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label for="hour" class="hour">투약 시간</label>
+                        <div class="time-inputs">
+                            <input type="text" id="hour" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                            <div>시</div>
+                            <input type="text" id="minute" maxlength="2" placeholder="00" class="time-input" inputmode="numeric" pattern="[0-9]*"> 
+                            <div>분</div>
+                        </div>
+                        <div id="error-message" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeat" class="repeat-title">투약반복</label>
+                        <div class="repeat">
+                            <div class="repeat-btn">월</div>
+                            <div class="repeat-btn">화</div>
+                            <div class="repeat-btn">수</div>
+                            <div class="repeat-btn">목</div>
+                            <div class="repeat-btn">금</div>
+                            <div class="repeat-btn">토</div>
+                            <div class="repeat-btn">일</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="submit-button3" class="submit-button3" disabled>추가</button>
+                </div>
+            </div>
+        </div>
 
+        <!-- modal 4 -->
         <div id="modal4" class="modal4">
             <div class="modal-content">
                 <div class="modal-header">
                     <span class="close" onclick="closeModal()">취소</span>
-                    <div class="modal-title">식사시간등록하기</div>
+                    <div class="modal-title">식사 시간 등록하기</div>
                 </div>
-                <div class="form-group">
-                    <label for="reason">할 일의 이름</label>
-                    <input type="text" id="reason3" placeholder="할 일을 입력해주세요">
-                </div>
-                <div class="form-group">
-                    <label for="hour" class="hour">시간</label>
-                    <div class="time-inputs3">
-                        <input type="text" id="hour3" maxlength="2" placeholder="00" class="time-input3" inputmode="numeric" pattern="[0-9]*"> 
-                        <div>시</div>
-                        <input type="text" id="minute3" maxlength="2" placeholder="00" class="time-input3" inputmode="numeric" pattern="[0-9]*"> 
-                        <div>분</div>
+                <div class="modal-body">
+                    <div class="meal">
+                        <div class="meal-title">🍚 등록된 식사 시간</div>
+                        <div class="meal-status" id="meal-status">없음</div>
                     </div>
-                    <div id="error-message4" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                    <div class="record-info">아침,점심,저녁을 모두 등록해주세요</div>
+                    <div class="form-group">
+                        <label for="reason3">식사 시간 구분</label>
+                        <select id="meal-select">
+                            <option value="아침">아침</option>
+                            <option value="점심">점심</option>
+                            <option value="저녁">저녁</option>
+                        </select>
+                    </div>
+                        <div class="form-group">
+                            <label for="hour3" class="hour">시간</label>
+                            <div class="time-inputs3">
+                                <input type="text" id="hour3" maxlength="2" placeholder="00" class="time-input3" inputmode="numeric" pattern="[0-9]*"> 
+                                <div>시</div>
+                                <input type="text" id="minute3" maxlength="2" placeholder="00" class="time-input3" inputmode="numeric" pattern="[0-9]*"> 
+                                <div>분</div>
+                            </div>
+                            <div id="error-message3" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                        </div>
+                </div>    
+                 
+                <div class="modal-footer">
+                    <button id="submit-button4" class="submit-button4" disabled>추가</button>
                 </div>
-                <button id="submit-button4" class="submit-button4" disabled>추가</button>
             </div>
         </div>
+
     <script>
         const staticUrls = {
             taskImg: "{% static 'img/task.png' %}",

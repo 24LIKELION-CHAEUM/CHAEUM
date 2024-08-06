@@ -4,41 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolocation으로 마커 표시하기</title>
-    <link rel="stylesheet" href="css/nav.css"> 
-    <link rel="stylesheet" href="css/welfare.css"> 
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <link rel="stylesheet" href="{% static 'tasks/css/welfare.css' %}"> 
     <style>
-        @import url(css/fonts.css);
+        @import url("{% static 'css/fonts.css' %}");
     </style>
 </head>
 <body>
     <div id="map-container">
         <div class="search-bar">
             <input type="text" class="input-field" id="search-input" placeholder="복지시설을 검색해보세요"/>
-            <img src="static/img/search.svg" id="search-button" class="search-button" alt="검색" />
+            <img src="{% static 'img/search.svg' %}" id="search-button" class="search-button" alt="검색" />
         </div>
         <div id="map"></div>
     </div>
     <footer class="navbar">
-        <a href="/html/senior/home.html" class="nav-item" data-id="home" data-active-src="/assets/nav/nav_home_active.svg" data-inactive-src="/assets/nav/nav_home_inactive.svg">
-            <img src="/assets/nav/nav_home_inactive.svg" alt="홈" class="nav-icon">
+        <a href="{% url 'home_senior' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_home_active.svg' %}" alt="홈" class="nav-icon">
             <span class="nav-text">홈</span>
         </a>
-        <a href="/html/senior/welfare.html" class="nav-item" data-id="welfare" data-active-src="/assets/nav/nav_building_active.svg" data-inactive-src="/assets/nav/nav_building_inactive.svg">
-            <img src="/assets/nav/nav_building_active.svg" alt="복지시설" class="nav-icon">
+        <a href="{% url 'senior_welfare' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_building_inactive.svg' %}" alt="복지시설" class="nav-icon">
             <span class="nav-text">복지시설</span>
         </a>
-        <a href="/html/senior/click.html" class="nav-item" data-id="click" data-active-src="/assets/nav/nav_finger_active.svg" data-inactive-src="/assets/nav/nav_finger_inactive.svg">
-            <img src="/assets/nav/nav_finger_inactive.svg" alt="콕찌르기" class="nav-icon">
+        <a href="{% url 'poke_page' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_finger_inactive.svg' %}" alt="콕찌르기" class="nav-icon">
             <span class="nav-text">콕찌르기</span>
         </a>
-        <a href="/html/senior/mypage.html" class="nav-item" data-id="mypage" data-active-src="/assets/nav/nav_user_active.svg" data-inactive-src="/assets/nav/nav_user_inactive.svg">
-            <img src="/assets/nav/nav_user_inactive.svg" alt="마이페이지" class="nav-icon">
+        <a href="{% url 'profile' %}" class="nav-item">
+            <img src="{% static 'img/nav/nav_user_inactive.svg' %}" alt="마이페이지" class="nav-icon">
             <span class="nav-text">마이페이지</span>
         </a>
     </footer>
     <div id="bottom-sheet" class="bottom-sheet">
         <div class="bottom-sheet-header" id="bottom-sheet-handle">
-            <img src = "static/img/img/bottombar.svg" alt="bottom-bar">
+            <img src = "{% static 'img/bottombar.svg' %}" alt="bottom-bar">
         </div>
         <div id="user-location" class="user-location">
         </div>
@@ -61,7 +62,7 @@
     </div>
 
     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=660fd081dd70fd0b49320bdb2fd17672&libraries=services"></script>
-    <script src="/js/senior/welfare.js"></script>
+    <script src="{% static 'tasks/js/senior/welfare.js' %}"></script>
 
 </body>
 </html>

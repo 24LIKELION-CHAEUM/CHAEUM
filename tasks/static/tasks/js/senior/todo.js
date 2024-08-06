@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const daysOfWeek = ['월', '화', '수', '목', '금', '토', '일'];
     const today = new Date();
+    const koreaTime = new Date(today.setHours(today.getHours() + 9));
     const currentDay = today.getDay();
     const currentDate = today.getDate();
     const fullDate = today.toLocaleDateString('ko-KR', {
@@ -11,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function() {
         day: 'numeric',
     });
 
-    const dayOfWeek = daysOfWeek[(currentDay + 6) % 7]; 
+    const dayOfWeek = daysOfWeek[(currentDay + 6) % 7];
     const tasks = document.querySelectorAll('.task');
     const options = document.querySelectorAll('.option');
     const submitButton = document.getElementById('submit-button');
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const medicationNameInput = document.getElementById('reason');
     const medicationDays = document.querySelectorAll('.repeat-btn');
     const recordedEmotionStatus = document.getElementById('mediation-status');
+    const medicationStatus = document.getElementById('medication-status');
 
     // modal2
     const hourInput2 = document.getElementById('hour2');
@@ -107,30 +109,32 @@ document.addEventListener("DOMContentLoaded", function() {
             console.error('tasksContainer element not found');
             return;
         }
-        let imageSrc;
-        switch (notification.type) {
-            case 'MEAL':
-                imageSrc = '/img/rice.png';
-                break;
-            case 'MED':
-                imageSrc = '/assets/medecine.png';
-                break;
-            case 'TASK':
-                imageSrc = '/assets/task.png';
-                break;
-        }
-        tasksContainer.innerHTML = tasks.map(task => `
-            <div class="task" data-id="${task.id}">
-                <div class="task-icon"><img src="${imageSrc}" alt=""></div>
-                <div class="task-info">
-                    <div class="task-title">${task.title}</div>
-                    <div class="task-time">${task.time}</div>
+        tasksContainer.innerHTML = tasks.map(task => {
+            let imageSrc;
+            switch (task.type) {
+                case 'MEAL':
+                    imageSrc = staticUrls.riceImg;
+                    break;
+                case 'MED':
+                    imageSrc = staticUrls.medicineImg;
+                    break;
+                case 'TASK':
+                    imageSrc = staticUrls.taskImg;
+                    break;
+            }
+            return `
+                <div class="task" data-id="${task.id}">
+                    <div class="task-icon"><img src="${imageSrc}" alt=""></div>
+                    <div class="task-info">
+                        <div class="task-title">${task.title}</div>
+                        <div class="task-time">${task.time}</div>
+                    </div>
+                    <div class="task-status">
+                        <img src="${task.completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg}" alt="체크" class="check-button">
+                    </div>
                 </div>
-                <div class="task-status">
-                    <img src="/assets/check_${task.completed ? 'activated' : 'unactivated'}.svg" alt="체크" class="check-button">
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
         addCheckButtonListeners();
     }
 
@@ -151,9 +155,34 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Task created:', data);
-            fetchTasks(today.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
         } catch (error) {
             console.error('Error creating task:', error);
+        }
+    }
+
+    // 새로운 약물 생성하기
+    async function createMedication(medication) {
+        const url = 'http://127.0.0.1:8000/tasks/';
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify(medication)
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            console.log('Medication created:', data);
+            fetchTasks(koreaTime.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
+            medicationCount++;
+            updateMedicationCount();
+        } catch (error) {
+            console.error('Error creating medication:', error);
         }
     }
 
@@ -180,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+
     tasks.forEach(task => {
         const checkButton = task.querySelector('.task-status img');
         checkButton.addEventListener('click', () => {
@@ -199,13 +229,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     updateTaskStatus(taskId, completed);
                     taskElement.classList.toggle('completed');
                     const taskTitle = taskElement.querySelector('.task-title');
-                    if (completed) {
-                        taskTitle.style.textDecoration = 'line-through';
-                        this.src = '/assets/check_activated.svg';
-                    } else {
-                        taskTitle.style.textDecoration = 'none';
-                        this.src = '/assets/check_unactivated.svg';
-                    }
+                    this.src = completed ? staticUrls.checkActivatedImg : staticUrls.checkUnactivatedImg;
+                    taskTitle.style.textDecoration = completed ? 'line-through' : 'none';
                 } else {
                     console.error('taskElement not found');
                 }
@@ -213,29 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // 약물 등록하기
-    async function createMedication(medication) {
-        const url = 'http://127.0.0.1:8000/tasks/';
-        try {ß
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                },
-                body: JSON.stringify(medication)
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log('Medication created:', data);
-            medicationCount++;
-            updateMedicationCount();
-        } catch (error) {
-            console.error('Error creating medication:', error);
-        }
-    }
 
     // 폼 제출 이벤트 리스너
     if (taskForm) {
@@ -287,7 +289,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const medicationName = medicationNameInput.value.trim();
         const hour = hourInput.value.trim();
         const minute = minuteInput.value.trim();
-        const selectedDays = Array.from(medicationDays).filter(dayButton => dayButton.classList.contains('selected')).length;
+        const selectedDays = Array.from(medicationDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => daysOfWeek.indexOf(dayButton.textContent));
         const isTimeValid = validateTime(hour, minute);
 
         if (hour || minute) {
@@ -300,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function() {
             errorMessage.classList.add('hidden');
         }
 
-        if (medicationName && hour && minute && selectedDays > 0 && isTimeValid && medicationCount < 3) {
+        if (medicationName && hour && minute && selectedDays.length > 0 && isTimeValid && medicationCount < 3) {
             submitButton3.classList.add('enabled');
             submitButton3.classList.remove('disabled');
             submitButton3.disabled = false;
@@ -317,7 +319,7 @@ document.addEventListener("DOMContentLoaded", function() {
         const taskName = taskNameInput2.value.trim();
         const hour = hourInput2.value.trim();
         const minute = minuteInput2.value.trim();
-        const selectedDays = Array.from(taskDays).filter(dayButton => dayButton.classList.contains('selected')).length;
+        const selectedDays = Array.from(taskDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => daysOfWeek.indexOf(dayButton.textContent));
         const isTimeValid = validateTime(hour, minute);
 
         if (hour || minute) {
@@ -330,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function() {
             errorMessage2.classList.add('hidden');
         }
 
-        if (taskName && hour && minute && selectedDays > 0 && isTimeValid) {
+        if (taskName && hour && minute && selectedDays.length > 0 && isTimeValid) {
             submitButton2.classList.add('enabled');
             submitButton2.classList.remove('disabled');
             submitButton2.disabled = false;
@@ -350,7 +352,9 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function updateMedicationCount() {
-        medicationStatus.textContent = `${medicationCount}/3`;
+        if (medicationStatus) {
+            medicationStatus.textContent = `${medicationCount}/3`;
+        }
         if (medicationCount >= 3) {
             submitButton3.disabled = true;
             submitButton3.classList.remove('enabled');
@@ -440,10 +444,11 @@ document.addEventListener("DOMContentLoaded", function() {
         submitButton3.addEventListener('click', () => {
             if (!submitButton3.disabled) {
                 const medication = {
-                    name: medicationNameInput.value.trim(),
-                    hour: hourInput.value.trim(),
-                    minute: minuteInput.value.trim(),
-                    days: Array.from(medicationDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => dayButton.dataset.day)
+                    title: medicationNameInput.value.trim(),
+                    time: `${hourInput.value.trim()}:${minuteInput.value.trim()}`,
+                    completed: false,
+                    type: 'MED',
+                    repeat_days: Array.from(medicationDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => daysOfWeek.indexOf(dayButton.textContent))
                 };
 
                 createMedication(medication);
@@ -462,6 +467,16 @@ document.addEventListener("DOMContentLoaded", function() {
     if (submitButton2) {
         submitButton2.addEventListener('click', () => {
             if (!submitButton2.disabled) {
+                const newTask = {
+                    title: taskNameInput2.value.trim(),
+                    time: `${hourInput2.value.trim()}:${minuteInput2.value.trim()}`,
+                    completed: false,
+                    type: 'TASK',
+                    repeat_days: Array.from(taskDays).filter(dayButton => dayButton.classList.contains('selected')).map(dayButton => daysOfWeek.indexOf(dayButton.textContent))
+                };
+
+                createTask(newTask);
+
                 taskNameInput2.value = '';
                 hourInput2.value = '';
                 minuteInput2.value = '';
@@ -477,6 +492,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (fullDateElement) fullDateElement.textContent = fullDate;
     if (dayOfWeekElement) dayOfWeekElement.textContent = `${dayOfWeek}요일`;
 
-    fetchTasks(today.toISOString().split('T')[0]);
+    fetchTasks(koreaTime.toISOString().split('T')[0]);
     updateMedicationCount();
 });

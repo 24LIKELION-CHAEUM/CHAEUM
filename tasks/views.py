@@ -12,8 +12,14 @@ from django.dispatch import receiver
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import render
 
-def senior_todolist(request):
+from django.shortcuts import render
+
+def todolist(request):
     return render(request, 'tasks/senior/todo.html')
+def alarmlist(request):
+    return render(request, 'tasks/senior/alarm.html')
+def senior_welfare(request):
+    return render(request, 'tasks/senior/welfare.html')
 
 class TaskViewSet(viewsets.ModelViewSet):
     queryset = Task.objects.all()
@@ -56,7 +62,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=['patch'])
     def check_complete(self, request, pk=None):
         task = self.get_object()
-        task.is_completed = not task.is_completed
+        task.is_completed = True
         task.save()
         return Response({'status': 'completed updated'})
 

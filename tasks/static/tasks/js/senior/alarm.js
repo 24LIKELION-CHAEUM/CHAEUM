@@ -39,13 +39,13 @@ document.addEventListener("DOMContentLoaded", function() {
             let imageSrc;
             switch (notification.type) {
                 case 'MEAL':
-                    imageSrc = '/img/rice.png';
+                    imageSrc = staticUrls.riceImg;
                     break;
                 case 'MED':
-                    imageSrc = '/assets/medecine.png';
+                    imageSrc = staticUrls.medicineImg;
                     break;
                 case 'TASK':
-                    imageSrc = '/assets/task.png';
+                    imageSrc = staticUrls.taskImg;
                     break;
             }
             notificationItem.innerHTML = `
@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // 알림 읽음 처리 이벤트 리스너 추가
             notificationItem.addEventListener('click', () => {
                 markAsRead(notification.id);
+                window.location.href = '/todo';
             });
         });
     

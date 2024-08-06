@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+ocument.addEventListener("DOMContentLoaded", function() {
     const token = localStorage.getItem('access_token');
 
     async function fetchNotifications() {
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", function() {
     function displayNotifications(notifications) {
         const notificationList = document.querySelector('.notification-list');
         notificationList.innerHTML = '';  // 기존 내용 초기화
-    
+
         notifications.forEach(notification => {
             const currentTime = new Date();
             const [hours, minutes, seconds] = notification.notify_time.split(':');
@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function() {
             notifyTime.setHours(hours);
             notifyTime.setMinutes(minutes);
             notifyTime.setSeconds(seconds);
-    
+
             const timeDiff = (currentTime - notifyTime) / (1000 * 60 * 60); // 시간 차이 계산
             const notificationItem = document.createElement('div');
             notificationItem.className = `notification-item ${notification.is_read ? 'read' : ''}`;
@@ -39,13 +39,13 @@ document.addEventListener("DOMContentLoaded", function() {
             let imageSrc;
             switch (notification.type) {
                 case 'MEAL':
-                    imageSrc = '/img/rice.png';
+                    imageSrc = staticUrls.riceImg;
                     break;
                 case 'MED':
-                    imageSrc = '/assets/medecine.png';
+                    imageSrc = staticUrls.medicineImg;
                     break;
                 case 'TASK':
-                    imageSrc = '/assets/task.png';
+                    imageSrc = staticUrls.taskImg;
                     break;
             }
             notificationItem.innerHTML = `
@@ -60,13 +60,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 </div>
             `;
             notificationList.appendChild(notificationItem);
-    
+
             // 알림 읽음 처리 이벤트 리스너 추가
             notificationItem.addEventListener('click', () => {
                 markAsRead(notification.id);
             });
         });
-    
+
         // 텍스트 길이 제한 함수 호출
         truncateTextElements();
     }
@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    
+
 
     // 알림 삭제하기
     async function deleteNotification(notificationID) {
@@ -137,5 +137,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // 초기화
     fetchNotifications();
-   
+
 });

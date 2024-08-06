@@ -76,6 +76,17 @@
                     <div class="next2" id="next2">
                         <img src="{% static 'img/arrow_next.svg' %}" alt="next">
                     </div>
+                <div class="option">
+                    <div class="option-icon">🍚</div>
+                    <div class="option-info">
+                        <div class="option-title">식사 시간 등록하기</div>
+                        <div class="option-time">
+                            <span class="highlight">아침, 점심, 저녁</span><span class="normal">을 모두 등록해주세요</span>
+                        </div>
+                    </div>
+                    <div class="next3" id="next3">
+                        <img src="{% static 'img/arrow_next.svg' %}" alt="next">
+                    </div>
                 </div>
                 <button id="submit-button" class="submit-button" disabled>다음</button>
             </div>
@@ -124,41 +135,66 @@
         </div>
 
         <!-- modal 2 -->
-    <div id="modal2" class="modal2">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span class="close" onclick="closeModal()">취소</span>
-                <div class="modal-title">다른 할 일 등록하기</div>
-            </div>
-            <div class="form-group">
-                <label for="reason">할 일의 이름</label>
-                <input type="text" id="reason2" placeholder="할 일을 입력해주세요">
-            </div>
-            <div class="form-group">
-                <label for="hour" class="hour">시간</label>
-                <div class="time-inputs2">
-                    <input type="text" id="hour2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
-                    <div>시</div>
-                    <input type="text" id="minute2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
-                    <div>분</div>
+        <div id="modal2" class="modal2">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" onclick="closeModal()">취소</span>
+                    <div class="modal-title">다른 할 일 등록하기</div>
                 </div>
-                <div id="error-message2" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
-            </div>
-            <div class="form-group">
-                <label for="repeat" class="repeat-title">할 일 반복</label>
-                <div class="repeat">
-                    <div class="repeat-btn2">월</div>
-                    <div class="repeat-btn2">화</div>
-                    <div class="repeat-btn2">수</div>
-                    <div class="repeat-btn2">목</div>
-                    <div class="repeat-btn2">금</div>
-                    <div class="repeat-btn2">토</div>
-                    <div class="repeat-btn2">일</div>
+                <div class="form-group">
+                    <label for="reason">할 일의 이름</label>
+                    <input type="text" id="reason2" placeholder="할 일을 입력해주세요">
                 </div>
+                <div class="form-group">
+                    <label for="hour" class="hour">시간</label>
+                    <div class="time-inputs2">
+                        <input type="text" id="hour2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
+                        <div>시</div>
+                        <input type="text" id="minute2" maxlength="2" placeholder="00" class="time-input2" inputmode="numeric" pattern="[0-9]*"> 
+                        <div>분</div>
+                    </div>
+                    <div id="error-message2" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                </div>
+                <div class="form-group">
+                    <label for="repeat" class="repeat-title">할 일 반복</label>
+                    <div class="repeat">
+                        <div class="repeat-btn2">월</div>
+                        <div class="repeat-btn2">화</div>
+                        <div class="repeat-btn2">수</div>
+                        <div class="repeat-btn2">목</div>
+                        <div class="repeat-btn2">금</div>
+                        <div class="repeat-btn2">토</div>
+                        <div class="repeat-btn2">일</div>
+                    </div>
+                </div>
+                <button id="submit-button2" class="submit-button2" disabled>추가</button>
             </div>
-            <button id="submit-button2" class="submit-button2" disabled>추가</button>
         </div>
-    </div>
+
+
+        <div id="modal4" class="modal4">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" onclick="closeModal()">취소</span>
+                    <div class="modal-title">식사시간등록하기</div>
+                </div>
+                <div class="form-group">
+                    <label for="reason">할 일의 이름</label>
+                    <input type="text" id="reason3" placeholder="할 일을 입력해주세요">
+                </div>
+                <div class="form-group">
+                    <label for="hour" class="hour">시간</label>
+                    <div class="time-inputs3">
+                        <input type="text" id="hour3" maxlength="2" placeholder="00" class="time-input3" inputmode="numeric" pattern="[0-9]*"> 
+                        <div>시</div>
+                        <input type="text" id="minute3" maxlength="2" placeholder="00" class="time-input3" inputmode="numeric" pattern="[0-9]*"> 
+                        <div>분</div>
+                    </div>
+                    <div id="error-message4" class="error-message hidden">입력하신 내용을 다시 확인해주세요</div>
+                </div>
+                <button id="submit-button4" class="submit-button4" disabled>추가</button>
+            </div>
+        </div>
     <script>
         const staticUrls = {
             taskImg: "{% static 'img/task.png' %}",

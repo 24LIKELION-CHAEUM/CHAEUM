@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     const dayOfWeek = daysOfWeek[(currentDay + 6) % 7];
-    const tasks = document.querySelectorAll('.task');
     const options = document.querySelectorAll('.option');
     const submitButton = document.getElementById('submit-button');
 
@@ -22,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const modal1 = document.getElementById('modal1');
     const modal2 = document.getElementById('modal2');
     const modal3 = document.getElementById('modal3');
+    const modal4 = document.getElementById('modal4');
     const hourInput = document.getElementById('hour');
     const minuteInput = document.getElementById('minute');
     const submitButton3 = document.getElementById('submit-button3');
@@ -38,6 +38,15 @@ document.addEventListener("DOMContentLoaded", function() {
     const submitButton2 = document.getElementById('submit-button2');
     const taskNameInput2 = document.getElementById('reason2');
     const taskDays = document.querySelectorAll('.repeat-btn2');
+
+    //modal4
+    
+    const hourInput3 = document.getElementById('hour3');
+    const minuteInput3 = document.getElementById('minute3');
+    const errorMessage3 = document.getElementById('error-message3');
+    const submitButton4 = document.getElementById('submit-button3');
+    const taskNameInput3 = document.getElementById('reason3');
+ 
 
     const taskForm = document.getElementById('task-form');
     const taskTitleInput = document.getElementById('task-title');
@@ -155,7 +164,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const data = await response.json();
             console.log('Task created:', data);
             fetchTasks(today.toISOString().split('T')[0]); // 새로 생성된 할 일 목록을 다시 가져옵니다.
-            fetchUnreadCount(); // 읽지 않은 알림 개수 업데이트
         } catch (error) {
             console.error('Error creating task:', error);
         }
@@ -187,7 +195,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // 할 일 완료 상태 업데이트
     async function updateTaskStatus(taskId, completed) {
         const url = `http://127.0.0.1:8000/tasks/${taskId}/check_complete/`;
         try {
@@ -204,18 +211,11 @@ document.addEventListener("DOMContentLoaded", function() {
             }
             const data = await response.json();
             console.log('Task status updated:', data);
-            addCheckButtonListeners();
+            fetchTasks(today.toISOString().split('T')[0]); // 업데이트된 할 일 목록을 다시 가져옵니다.
         } catch (error) {
             console.error('Error updating task status:', error);
         }
     }
-
-    tasks.forEach(task => {
-        const checkButton = task.querySelector('.task-status img');
-        checkButton.addEventListener('click', () => {
-            task.classList.toggle('completed');
-        });
-    });
 
     // 체크 버튼 이벤트 리스너 추가
     function addCheckButtonListeners() {
@@ -364,9 +364,8 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function openModal(modal) {
-        const modals = [modal1, modal2, modal3];
+        const modals = [modal1, modal2, modal3, modal4];
         modals.forEach(m => m.classList.remove('show'));
-        modalBackdrop.classList.remove('show');
 
         if (modal) {
             modal.classList.add('show');
@@ -378,6 +377,7 @@ document.addEventListener("DOMContentLoaded", function() {
         modal1.classList.remove('show');
         modal2.classList.remove('show');
         modal3.classList.remove('show');
+        modal4.classList.remove('show');
         modalBackdrop.classList.remove('show');
         resetOptionAndButton();
     }
@@ -390,9 +390,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 openModal(modal3);
             } else if (optionText === "다른 할 일 추가하기") {
                 openModal(modal2);
+            } else if (optionText === "식사 시간 등록하기") {
+                openModal(modal4);
             }
 
-            resetOptionAndButton();
+            modal1.classList.remove('show');
         }
     }
 
@@ -481,6 +483,26 @@ document.addEventListener("DOMContentLoaded", function() {
                 minuteInput2.value = '';
                 taskDays.forEach(dayButton => dayButton.classList.remove('selected'));
                 validateTaskForm();
+            }
+        });
+    }
+
+    if (submitButton4) {
+        submitButton4.addEventListener('click', () => {
+            if (!submitButton4.disabled) {
+                const newTask = {
+                    title: taskNameInput3.value.trim(),
+                    time: `${hourInput3.value.trim()}:${minuteInput2.value.trim()}`,
+                    completed: false,
+                    type: 'MEAL',
+                };
+
+                createTask(newTask);
+
+                taskNameInput3.value = '';
+                hourInput3.value = '';
+                minuteInput3.value = '';
+                
             }
         });
     }

@@ -167,7 +167,7 @@ main {
 }
 
 .task.completed .task-status img {
-    content: url('/img/check_activated.svg'); 
+    content: url('img/check_activated.svg'); 
 }
 
 .task-time {
@@ -197,7 +197,8 @@ main {
 
 .modal1.show .modal-content,
 .modal2.show .modal-content,
-.modal3.show .modal-content {
+.modal3.show .modal-content,
+.modal4.show .modal-content {
     bottom: 0;
 }
 
